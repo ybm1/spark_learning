@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="" />
+    <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_word_count.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_learn.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,10 +15,21 @@
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IgnoredFileRootStore">
+    <option name="generatedRoots">
+      <set>
+        <option value="$PROJECT_DIR$/.idea" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1V6xqo7qcfRFnfHQPq7QuCIvgcI" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
@@ -21,12 +37,13 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.spark_word_count">
     <configuration name="spark_learn" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_learn" />
       <module name="spark_learning" />
@@ -40,8 +57,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="spark_word_count" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_word_count" />
+      <module name="spark_learning" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="scala.bigdata.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.spark_word_count" />
         <item itemvalue="Application.spark_learn" />
       </list>
     </recent_temporary>
@@ -72,6 +103,34 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
+    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1576589776298">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1440.900@0.0.1440.900" timestamp="1576589776298" />
+    <state x="583" y="350" key="Github.ShareDialog" timestamp="1576587948553">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="583" y="350" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1576587948553" />
+    <state x="446" y="159" key="Github.UntrackedFilesDialog" timestamp="1576587983315">
+      <screen x="0" y="23" width="1440" height="798" />
+    </state>
+    <state x="446" y="159" key="Github.UntrackedFilesDialog/0.23.1440.798@0.23.1440.798" timestamp="1576587983315" />
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom" timestamp="1576589799893">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1576589799893" />
+    <state width="1398" height="245" key="GridCell.Tab.0.center" timestamp="1576589799891">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1576589799891" />
+    <state width="1398" height="245" key="GridCell.Tab.0.left" timestamp="1576589799890">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1576589799890" />
+    <state width="1398" height="245" key="GridCell.Tab.0.right" timestamp="1576589799892">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state width="1398" height="245" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1576589799892" />
     <state x="208" y="31" key="SettingsEditor" timestamp="1576587846840">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
