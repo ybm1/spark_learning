@@ -133,6 +133,7 @@ object spark_dataframe {
     sqlDF.show()
 
     println("Run Successfully")
+    spark.stop()
   }
 
   def read_and_transform_type(spark: SparkSession):

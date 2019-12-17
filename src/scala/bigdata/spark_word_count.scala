@@ -119,7 +119,7 @@ object spark_word_count {
     //      .map(a=>(a._1,a._2.sum)).sortBy(a=>a._1)
     //    w6.collect()
 
-
+    spark.stop()
   }
 
 }

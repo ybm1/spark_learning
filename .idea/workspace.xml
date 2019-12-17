@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_word_count.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_learn.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_word_count.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_word_count.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,13 +99,33 @@
       <option name="presentableId" value="Default" />
       <updated>1576587539352</updated>
     </task>
+    <task id="LOCAL-00001" summary="整理了word count例子和Spark SQL操作">
+      <created>1576590202951</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1576590202951</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="整理了word count例子和Spark SQL操作" />
+    <option name="LAST_COMMIT_MESSAGE" value="整理了word count例子和Spark SQL操作" />
   </component>
   <component name="WindowStateProjectService">
     <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1576589776298">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1440.900@0.0.1440.900" timestamp="1576589776298" />
+    <state x="470" y="260" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576591106429">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="470" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1576591106429" />
+    <state x="365" y="48" key="CommitChangelistDialog2" timestamp="1576590202389">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="365" y="48" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1576590202389" />
     <state x="583" y="350" key="Github.ShareDialog" timestamp="1576587948553">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -135,6 +154,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1576587846840" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1576590213778">
+      <screen x="0" y="0" width="1440" height="900" />
+    </state>
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1576590213778" />
     <state x="413" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1576587546740">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
