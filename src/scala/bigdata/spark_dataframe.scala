@@ -27,10 +27,7 @@ object spark_dataframe {
 
 // 这里用了一份宝石相关的数据来演示相关算子的操作
     val df_tr = read_and_transform_type(spark)
-    df_tr.
-      map(a=>(a._2,a._3,a._6)).
-      groupByKey(a=>(a._3,a._2))
-      //.groupBy(a=>(a._1,a._2))
+
 
     // 以树形结构展示数据的结果
     df_tr.printSchema()
@@ -41,20 +38,21 @@ object spark_dataframe {
     val df_tr_DF = df_tr.toDF("carat", "color", "clarity", "x", "y", "z", "depth", "arr1", "arr2")
     df_tr_DF.select($"color", $"carat" + 1).show
     // filter
-    df_tr_DF.filter($"carat" > 0.2).
-      filter($"y".isin(0, 4)).show
+    val df_filter = df_tr_DF.filter($"carat" > 0.2).
+      filter($"y".isin(0, 4))
+
     // groupby and agg,这里的groupby操作是对于DataFrame做的，是标准的分组聚合操作，
 
     df_tr_DF.groupBy($"color",$"depth").
           agg(count($"clarity").as("count"),sum($"x"-$"y"*2).as("sum"),mean($"y").as("mean")).
           show
 
-    // groupBy (Dataset)
+    // groupBy 这里顺便对比Dataset的分组聚合操作
     val t = df_tr.
       map(t=>(t._2,t._3,t._5,t._6)).rdd.groupBy(a=>(a._1,a._2))
       //groupBy()
     t
-    // reduceByKey
+    // reduceByKey 再补充reduceByKey和groupByKey这两个常用算子的用法
     val t1 = df_tr.
       map(t=>(t._2,t._3)).
     // ByKey类型的算子，都只能对键值对类型的数据进行操作，一般的Dataset不一定没有这种方法
@@ -94,13 +92,6 @@ object spark_dataframe {
       mapValues(x=>x.sum)
     gbk_rdd
 
-//
-//    val gbk_df = df_tr.
-//      map(t => (t._2, t._3,t._6,t._7)).
-//      toDF("a","b","c","d").
-//      groupByKey()
-//    gbk_df
-
     //  注意rdd经过了groupByKey的操作后，得到的是((k1,(v11,..,v1m)),(k2,(v21,..v2m))...)
     // 他把同一个Key对应的value都拉取到了，得到的是key-value的形式，所以后面一般会跟聚合操作，如直接对value进行操作的算子
     // mapValues,该算子直接对键值对中的value进行操作,这里直接做了求和，相当于实现了分组求和的功能
@@ -116,7 +107,7 @@ object spark_dataframe {
       t13
     // flatMapGroups,MapGroups ？？ 未查到相关资料
 
-    // flatMap
+    // flatMap用法
     val t2 = df_tr.flatMap(t => (t._9)).filter(a => a.contains("VV")).count()
     // flatMap相当于map+flatten操作，如果数据中某一列是Seq这种形式，即不是单个数或者字符(因为就一个元素没法拉平)，
     // 而是Seq，就可以根据需求来进行flatMap，
@@ -124,20 +115,46 @@ object spark_dataframe {
     // 关于map和flapMap之间的区别，参考：https://blog.csdn.net/WYpersist/article/details/80220211
     println(t2)
 
+    // 删除列操作
+    val df_drop = df_tr_DF.drop("x")
+    // 删除带有空值的行
+    val df_drop_na = df_tr_DF.na.drop()
 
-    // DataFrame to SQL table
-    df_tr_DF.createOrReplaceTempView("diamonds")
+    // 按照指定列排序
+    val df_orderby = df_tr_DF.orderBy(desc("x"),col("y"))
+    println("df_orderby======>",df_orderby.show())
+    val df_sort = df_tr_DF.sort(desc("x"),asc("y"))
+    println("df_sort======>",df_sort.show)
+    // 去重
+    val df_distinct = df_tr_DF.distinct()
+    // join
+    val df_join = df_tr_DF.join(df_filter, Seq("carat","color"),joinType = "inner")
+    print("df_join======>",df_join.show)
 
-    val sqlDF = spark.
-      sql("SELECT color,clarity,sum(x),max(x) FROM diamonds group by color,clarity")
-    sqlDF.show()
+    // union
+    val df_union = df_distinct.union(df_filter)
+    print("df_union======>",df_union.show)
 
-    println("Run Successfully")
+    // explode 函数
+    // explode 用来根据某列分割成多行
+    //通常用来展开array或map为多行。
+    // 或者读取josn的嵌套数据
+    // 下面把数据中的Array列arr1展成多行
+    val df_exploed_array = df_tr_DF.withColumn("new_clo_from_arr", explode(col("arr1")))
+    print("df_exploed_array======>",df_exploed_array.show)
+
+//    // 再把map展成多行
+//    拆分Map格式的列。
+//    df = df.select(explode(col("data"))).toDF("key", "value");
+//    可以看到，这里和List有一个不同的地方是需要在explode后接一个toDF操作，是因为Map进行展开操作后自然会得到两列，我们需要将其转化为DataFrame格式的两列，列名可以自己指定。
+
+
     spark.stop()
   }
 
   def read_and_transform_type(spark: SparkSession):
   Dataset[(Double, String, String, Double, Double, Double, String, Seq[Double], Seq[String])] = {
+    //Map[String,String]
     // 函数的返回类型，要指定，DataFrame和Dataset不同
     val df = spark.read.option("header", "true").csv("./data/diamonds.csv")
 //  补充对常见数据源的读取和保存
@@ -161,9 +178,10 @@ object spark_dataframe {
       val depth = row.getAs[String]("depth")
       val arr1 = Seq(x, y, z)
       val arr2 = Seq(color, clarity, depth)
+      val map1 = Map((color,depth))
       (carat, color, clarity, x, y, z, depth, arr1, arr2)
     })
-    //.toDF("carat","color","clarity","x","y","z","depth","arr1","arr2")
+    //.toDF("carat","color","clarity","x","y","z","depth","arr1","arr2","map1")
     // 如果转化为DF，._1这种操作就不能使用，可以在最后转化为DF，中间的数据形式保持为Dataset
     // DF有列名，而Dataset没有，Dataset要通过 ._1,._2的方式取列
     df_t
