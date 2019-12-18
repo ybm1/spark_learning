@@ -21,10 +21,19 @@ object spark_udf {
     df_tr_DF.createOrReplaceTempView("diamonds")
     // 用spark SQL 运行SQL
     val sqlDF = spark.
-      sql("SELECT color,clarity,sum(x),max(x) FROM diamonds group by color,clarity")
+      sql("select color,clarity,sum(x),max(x) from diamonds group by color,clarity")
     sqlDF.show()
+    // 窗口函数练习
+    val sqlDF1 = spark.
+      sql(
+        "select color,clarity,x," +
+          " row_number() over " +
+          "(partition by color order by x desc ) " +
+          "as rank from diamonds")
+    sqlDF1.show()
 
-    // UDAF
+
+    // UDF
     // Register the UDF with our SparkSession
     // 注意 udf的作用相当于map操作，而不能做聚合，要做聚合要用UDAF
     spark.udf.register("myfun", (a: Double) => ((a * 9.0 / 5.0) + 32.0))
@@ -38,7 +47,7 @@ object spark_udf {
       //sql("SELECT color,clarity,myfun(x),max(x) FROM diamonds group by color,clarity")
       sql("SELECT color,clarity,strlen(color) FROM diamonds")
     sqlUDF2.show()
-    
+
     // UDAF
 
     println("Run Successfully")
