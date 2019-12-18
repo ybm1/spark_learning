@@ -1,4 +1,10 @@
-# spark_learning
-## My spark learning code using Scala.
+# Welcome to spark_learning
+## Here is my spark learning code using Scala.
 ### 主要代码在src中，包含了Scala基础和Spark的一些常用算子操作。
-### 数据在Data中，提供了一份宝石数据供参考使用。
+### 在src/basic中包含了Scala一些基本语法和使用。
+### 在src/bigdata下提供了spark的一些常用操作。
+#### 目前主要包括
+#### 1、用10种方法写了最经典的word count例子
+#### 2、spark DataFrame的常用操作
+#### 3、spark SQL的操作和UDF的简单使用
+### 数据在Data中，提供了一份csv数据和一个文本数据供参考使用。
