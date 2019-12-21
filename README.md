@@ -7,4 +7,5 @@
 #### 1、用10种方法写了最经典的word count例子
 #### 2、spark DataFrame的常用操作
 #### 3、spark SQL的操作和UDF的简单使用
+#### 4、尝试练习网上较为经典的50道SQL练习题，分别用Spark算子和SQL解决
 ### 数据在Data中，提供了一份csv数据和一个文本数据供参考使用。
