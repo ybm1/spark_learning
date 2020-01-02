@@ -78,7 +78,8 @@ object spark_dataframe {
 
     val gbk_dataset = df_tr.
       map(t => (t._2, t._3,t._5)).
-      groupByKey(a=>(a._1,a._2))
+      groupByKey(a=>(a._1,a._2)).count()
+      //mapValues(a=>a._3.toString+a._2+a._1).count()
     gbk_dataset
 
     // 第二，以RDD的方式，此时groupByKey里面要指定Key，groupByKey的单条数据的输入必须是长度为2的，即必须是(k,v)

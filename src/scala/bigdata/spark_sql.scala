@@ -26,7 +26,16 @@ object spark_sql {
 
     // SQL 做法
 
+    val s1_sql = spark.
+      sql("select st.Sname,s1.SID,s2.CID,s1.score as s1,s2.score as s2" +
+              " from Score s1, Score s2,Student st " +
+              "where s1.SID=s2.SID and st.SID = s1.SID" +
+              " and s1.CID='01' and s2.CID='02' " +
+            "and  s1.score>=s2.score")
+    s1_sql.show()
 
+    println("Run Successfully!")
+    spark.stop()
 
   }
   // 分别创建 学生表Student;科目表Course;教师表Teachers;成绩表Score;
