@@ -15,11 +15,18 @@ object spark_sql {
     val spark = SparkSession.builder.config(conf).enableHiveSupport.getOrCreate
     val sc = spark.sparkContext
     sc.setLogLevel("WARN")
+    import spark.implicits._ // 别忘了加上
 
     val Student = get_Student_table(spark).createOrReplaceTempView("Student")
     val Course = get_Course_table(spark).createOrReplaceTempView("Course")
     val Teacher = get_Teacher_table(spark).createOrReplaceTempView("Teacher")
     val Score = get_Score_table(spark).createOrReplaceTempView("Score")
+
+
+    val Student_df = get_Student_table(spark)
+    val Course_df = get_Course_table(spark)
+    val Teacher_df = get_Teacher_table(spark)
+    val Score_df = get_Score_table(spark)
 
     // 1.查询"01"课程比"02"课程成绩高的学生的信息及课程分数
     // spark做法
@@ -29,10 +36,16 @@ object spark_sql {
     val s1_sql = spark.
       sql("select st.Sname,s1.SID,s2.CID,s1.score as s1,s2.score as s2" +
               " from Score s1, Score s2,Student st " +
-              "where s1.SID=s2.SID and st.SID = s1.SID" +
+        "where s1.SID=s2.SID and st.SID = s1.SID" +
               " and s1.CID='01' and s2.CID='02' " +
             "and  s1.score>=s2.score")
+    val s1_sql_1 =spark.sql("select st.S")
+
+
     s1_sql.show()
+
+    //val s1_sp =Score_df.join(Score_df,Seq("SID"),joinType = "inner")
+    val s1_Sp = Score_df.filter($"CID">$"SID")
 
     println("Run Successfully!")
     spark.stop()

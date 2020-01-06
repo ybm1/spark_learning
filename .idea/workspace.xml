@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/Costomed_median.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/Customer_agg.scala" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/db.lck" afterDir="false" />
@@ -23,6 +24,13 @@
   </component>
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Package Object" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -53,9 +61,9 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="vcs.Git" />
   </component>
-  <component name="RunManager" selected="Application.spark_sql">
-    <configuration name="spark_dataframe" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_dataframe" />
+  <component name="RunManager" selected="Application.Costomed_median">
+    <configuration name="Costomed_median" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="scala.bigdata.Costomed_median" />
       <module name="spark_learning" />
       <extension name="coverage">
         <pattern>
@@ -67,8 +75,8 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="spark_learn" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_learn" />
+    <configuration name="spark_dataframe" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_dataframe" />
       <module name="spark_learning" />
       <extension name="coverage">
         <pattern>
@@ -121,11 +129,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Costomed_median" />
         <item itemvalue="Application.spark_sql" />
         <item itemvalue="Application.spark_udf" />
         <item itemvalue="Application.spark_word_count" />
         <item itemvalue="Application.spark_dataframe" />
-        <item itemvalue="Application.spark_learn" />
       </list>
     </recent_temporary>
   </component>
@@ -187,7 +195,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576938718881</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="SQL练习">
+      <created>1577954930748</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1577954930748</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -196,7 +211,8 @@
     <MESSAGE value="添加spark dataframe操作和spark SQL UDF 基本操作" />
     <MESSAGE value="添加spark sql的窗口函数练习" />
     <MESSAGE value="添加sql相关练习题，分别用spark和SQL解决" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加sql相关练习题，分别用spark和SQL解决" />
+    <MESSAGE value="SQL练习" />
+    <option name="LAST_COMMIT_MESSAGE" value="SQL练习" />
   </component>
   <component name="WindowStateProjectService">
     <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1576936387921">
@@ -207,10 +223,10 @@
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="470" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1576591106429" />
-    <state x="365" y="48" key="CommitChangelistDialog2" timestamp="1576938718449">
+    <state x="365" y="48" key="CommitChangelistDialog2" timestamp="1577954930030">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="365" y="48" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1576938718447" />
+    <state x="365" y="48" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1577954930030" />
     <state x="583" y="350" key="Github.ShareDialog" timestamp="1576587948553">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
@@ -219,34 +235,34 @@
       <screen x="0" y="23" width="1440" height="798" />
     </state>
     <state x="446" y="159" key="Github.UntrackedFilesDialog/0.23.1440.798@0.23.1440.798" timestamp="1576587983315" />
-    <state width="1016" height="263" key="GridCell.Tab.0.bottom" timestamp="1577954497919">
+    <state width="1014" height="198" key="GridCell.Tab.0.bottom" timestamp="1578323143368">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1016" height="263" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1577954497919" />
-    <state width="1016" height="263" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1577780422677" />
-    <state width="1016" height="263" key="GridCell.Tab.0.center" timestamp="1577954497916">
+    <state width="1014" height="198" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1578323143368" />
+    <state width="1015" height="263" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1577973106287" />
+    <state width="1014" height="198" key="GridCell.Tab.0.center" timestamp="1578323143365">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1016" height="263" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1577954497916" />
-    <state width="1016" height="263" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1577780422673" />
-    <state width="1016" height="263" key="GridCell.Tab.0.left" timestamp="1577954497913">
+    <state width="1014" height="198" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1578323143365" />
+    <state width="1015" height="263" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1577973106283" />
+    <state width="1014" height="198" key="GridCell.Tab.0.left" timestamp="1578323143362">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1016" height="263" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1577954497913" />
-    <state width="1016" height="263" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1577780422672" />
-    <state width="1016" height="263" key="GridCell.Tab.0.right" timestamp="1577954497917">
+    <state width="1014" height="198" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1578323143362" />
+    <state width="1015" height="263" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1577973106280" />
+    <state width="1014" height="198" key="GridCell.Tab.0.right" timestamp="1578323143367">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1016" height="263" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1577954497917" />
-    <state width="1016" height="263" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1577780422676" />
+    <state width="1014" height="198" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1578323143367" />
+    <state width="1015" height="263" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1577973106285" />
     <state x="208" y="31" key="SettingsEditor" timestamp="1576587846840">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
     <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1576587846840" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1576938730789">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1577954943828">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1576938730789" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1577954943828" />
     <state x="413" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1577779582134">
       <screen x="0" y="23" width="1440" height="798" />
     </state>

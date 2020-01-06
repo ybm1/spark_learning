@@ -4,6 +4,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.apache.spark.sql.functions._
+import scala.bigdata.Customer_agg._
 
 object spark_dataframe {
   def main(args: Array[String]): Unit = {
