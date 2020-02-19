@@ -1,7 +1,4 @@
 package scala.bigdata
-
-import java.util.Date
-
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 
@@ -31,21 +28,52 @@ object spark_sql {
     // 1.查询"01"课程比"02"课程成绩高的学生的信息及课程分数
     // spark做法
 
-    // SQL 做法
+    // SQL 做法  关键点是自连接
 
     val s1_sql = spark.
-      sql("select st.Sname,s1.SID,s2.CID,s1.score as s1,s2.score as s2" +
+      sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2  " +
               " from Score s1, Score s2,Student st " +
-        "where s1.SID=s2.SID and st.SID = s1.SID" +
+        "where s1.SID=s2.SID and st.SID = s1.SID " +
               " and s1.CID='01' and s2.CID='02' " +
             "and  s1.score>=s2.score")
-    val s1_sql_1 =spark.sql("select st.S")
+    val s1_sql_1 =spark.
+          sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2 " +
+            "from Score s1 join Score s2 on s1.SID=s2.SID " +
+           "join Student st on st.SID=s2.SID " +
+            "where s1.CID='01' and s2.CID='02' " +
+            "and s1.score>=s2.score"
+          )
 
 
     s1_sql.show()
+    s1_sql_1.show()
 
-    //val s1_sp =Score_df.join(Score_df,Seq("SID"),joinType = "inner")
-    val s1_Sp = Score_df.filter($"CID">$"SID")
+    val Score2 = Score_df.
+              //注意这里的重命名列的方法
+                withColumnRenamed("CID", "CID2").
+                withColumnRenamed("score", "score2")
+
+    val s1_sp =Score_df.
+            join(Score2,Seq("SID"),joinType = "inner").
+            join(Student_df,Seq("SID"),joinType = "inner").
+            // 注意是三等号
+            filter($"CID" === "01" && $"CID2" === "02").
+            filter($"score" > $"score2").
+            select("Sname","SID","CID","score","CID2","score2")
+    s1_sp
+    s1_sp.show
+    //val s1_Sp = s1_sp.select($"CID")
+
+
+
+
+
+
+
+
+
+
+
 
     println("Run Successfully!")
     spark.stop()
