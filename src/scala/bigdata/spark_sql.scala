@@ -1,7 +1,7 @@
 package scala.bigdata
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
-
+import org.apache.spark.sql.functions._ // 包含了sql中使用的聚合函数
 object spark_sql {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("Demo").
@@ -60,16 +60,32 @@ object spark_sql {
             filter($"CID" === "01" && $"CID2" === "02").
             filter($"score" > $"score2").
             select("Sname","SID","CID","score","CID2","score2")
-    s1_sp
-    s1_sp.show
-    //val s1_Sp = s1_sp.select($"CID")
+    s1_sp.show()
 
 
 
+    // 查询同时存在"01"课程和"02"课程的情况
 
+    val s2_sql = spark.sql(
+      """
+        |select Sname,SID,CID,nums
+        |from
+        |(select st.Sname,st.SID,sc.CID,count(sc.CID) as nums
+        |from Student st join Score sc on
+        |st.SID = sc.SID
+        |group by st.Sname,st.SID,sc.CID) t1
+        |where
+        |(CID = "01" or CID = "02")and nums >= 1
+        |order by Sname,SID,CID
+        |""".stripMargin)
+        s2_sql.show()
 
-
-
+    val s2_sp = Student_df.
+            join(Score_df,Seq("SID"),joinType = "inner").
+            groupBy($"Sname",$"SID",$"CID").agg(count($"CID").as("nums")).
+            filter($"CID" === "01" || $"CID" ==="02").
+            sort($"Sname",$"SID",$"CID",$"nums")
+    s2_sp.show()
 
 
 
