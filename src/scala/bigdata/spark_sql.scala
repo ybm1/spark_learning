@@ -1,4 +1,5 @@
 package scala.bigdata
+
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, Dataset, SparkSession}
 import org.apache.spark.sql.functions._ // 包含了sql中使用的聚合函数
@@ -32,60 +33,114 @@ object spark_sql {
 
     val s1_sql = spark.
       sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2  " +
-              " from Score s1, Score s2,Student st " +
+        " from Score s1, Score s2,Student st " +
         "where s1.SID=s2.SID and st.SID = s1.SID " +
-              " and s1.CID='01' and s2.CID='02' " +
-            "and  s1.score>=s2.score")
-    val s1_sql_1 =spark.
-          sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2 " +
-            "from Score s1 join Score s2 on s1.SID=s2.SID " +
-           "join Student st on st.SID=s2.SID " +
-            "where s1.CID='01' and s2.CID='02' " +
-            "and s1.score>=s2.score"
-          )
+        " and s1.CID='01' and s2.CID='02' " +
+        "and  s1.score>=s2.score")
+    val s1_sql_1 = spark.
+      sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2 " +
+        "from Score s1 join Score s2 on s1.SID=s2.SID " +
+        "join Student st on st.SID=s2.SID " +
+        "where s1.CID='01' and s2.CID='02' " +
+        "and s1.score>=s2.score"
+      )
 
 
     s1_sql.show()
     s1_sql_1.show()
 
     val Score2 = Score_df.
-              //注意这里的重命名列的方法
-                withColumnRenamed("CID", "CID2").
-                withColumnRenamed("score", "score2")
+      //注意这里的重命名列的方法
+      withColumnRenamed("CID", "CID2").
+      withColumnRenamed("score", "score2")
 
-    val s1_sp =Score_df.
-            join(Score2,Seq("SID"),joinType = "inner").
-            join(Student_df,Seq("SID"),joinType = "inner").
-            // 注意是三等号
-            filter($"CID" === "01" && $"CID2" === "02").
-            filter($"score" > $"score2").
-            select("Sname","SID","CID","score","CID2","score2")
+    val s1_sp = Score_df.
+      join(Score2, Seq("SID"), joinType = "inner").
+      join(Student_df, Seq("SID"), joinType = "inner").
+      // 注意是三等号
+      filter($"CID" === "01" && $"CID2" === "02").
+      filter($"score" > $"score2").
+      select("Sname", "SID", "CID", "score", "CID2", "score2")
     s1_sp.show()
 
 
 
-    // 查询同时存在"01"课程和"02"课程的情况
+    //  1.1 查询同时存在" 01 "课程和" 02 "课程的情况
 
+    val s1_1_sql = spark.sql(
+      """
+        |select st.Sname,st.SID,count(sc.CID) as nums
+        |from Student st join Score sc on st.SID = sc.SID
+        |where (CID = "01" or CID = "02")
+        |group by st.Sname,st.SID
+        |having nums >= 2
+        |order by Sname,SID
+        |""".stripMargin)
+    s1_1_sql.show()
+
+    val s1_1_sp = Student_df.
+      join(Score_df, Seq("SID"), joinType = "inner").
+      filter($"CID" === "01" || $"CID" === "02").
+      groupBy($"Sname", $"SID").agg(count($"CID").as("nums")).
+      filter($"nums" >=2).
+      sort($"Sname", $"SID")
+    s1_1_sp.show()
+
+
+    // 2.查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
     val s2_sql = spark.sql(
       """
-        |select Sname,SID,CID,nums
-        |from
-        |(select st.Sname,st.SID,sc.CID,count(sc.CID) as nums
-        |from Student st join Score sc on
-        |st.SID = sc.SID
-        |group by st.Sname,st.SID,sc.CID) t1
-        |where
-        |(CID = "01" or CID = "02")and nums >= 1
-        |order by Sname,SID,CID
-        |""".stripMargin)
-        s2_sql.show()
+         select st.Sname,st.SID,avg(sc.Score) as avg_score
+         from Student st join Score sc on st.SID = sc.SID
+         group by st.Sname,st.SID
+         having avg_score >= 60
+         """)
+
+    s2_sql.show()
 
     val s2_sp = Student_df.
-            join(Score_df,Seq("SID"),joinType = "inner").
-            groupBy($"Sname",$"SID",$"CID").agg(count($"CID").as("nums")).
-            filter($"CID" === "01" || $"CID" ==="02").
-            sort($"Sname",$"SID",$"CID",$"nums")
+      join(Score_df, Seq("SID"), joinType = "inner").
+      groupBy( $"Sname",$"SID").
+      agg(mean($"score").as("avg_score")).
+      filter($"avg_score" >= 60)
     s2_sp.show()
+
+
+    // 3 不会
+
+    // 4 查询所有同学的学生编号、学生姓名、选课总数、所有课程的总成绩(没成绩的显示为 null )
+    val s4_sql = spark.sql(
+      """
+        select st.Sname,st.SID,count(sc.CID) as nums, sum(sc.score) as score_sum
+        from Student st join Score sc on st.SID = sc.SID
+        group by st.Sname,st.SID
+        """)
+    s4_sql.show()
+    val s4_sp = Student_df.
+      join(Score_df,Seq("SID"),joinType = "inner").
+      groupBy($"Sname",$"SID").
+      agg(count($"CID").as("nums"),sum($"score").as("score_sum"))
+    s4_sp.show()
+
+    // 4.1 不会
+
+    // 5 查询「李」姓老师的数量
+
+    val s5_sql = spark.sql(
+      """
+        |select count(*) as nums
+        |from Teacher
+        |where Tname like "李%"
+        |""".stripMargin)
+
+  s5_sql.show()
+ val s5_sp = Teacher_df.
+   filter($"Tname" like "李%").
+ // agg算子可以直接聚合,也可以group by之后再聚合
+   agg(count($"Tname").as("nums"))
+
+s5_sp.show()
+
 
 
 
@@ -95,6 +150,7 @@ object spark_sql {
     spark.stop()
 
   }
+
   // 分别创建 学生表Student;科目表Course;教师表Teachers;成绩表Score;
   def get_Student_table(spark: SparkSession): DataFrame = {
     val Student_arr: Array[(String, String, String, String)] =
@@ -115,6 +171,7 @@ object spark_sql {
       toDF("SID", "Sname", "Sage", "Ssex")
     Student
   }
+
   def get_Course_table(spark: SparkSession): DataFrame = {
     val Course_arr: Array[(String, String, String)] =
       Array(("01", "语文", "02"),
@@ -134,6 +191,7 @@ object spark_sql {
       toDF("CID", "Cname", "TID")
     Course
   }
+
   def get_Teacher_table(spark: SparkSession): DataFrame = {
     val Teacher_arr: Array[(String, String)] =
       Array(("01", "宋江"),
@@ -153,23 +211,24 @@ object spark_sql {
       toDF("TID", "Tname")
     Teacher
   }
+
   def get_Score_table(spark: SparkSession): DataFrame = {
-    val Score_arr: Array[(String,String, Double)] =
-      Array(("01", "02",90),
-        ("02","01" ,88),
-        ("03", "01",78),
-        ("04", "02",99),
-        ("02","03" ,65),
-        ("04","01" ,70),
-        ("02","02" ,93),
-        ("01", "03",88),
-        ("01","01" ,89),
-        ("02","02" ,82),
-        ("03","03" ,70),
-        ("02","04" ,69))
+    val Score_arr: Array[(String, String, Double)] =
+      Array(("01", "02", 90),
+        ("02", "01", 88),
+        ("03", "01", 78),
+        ("04", "02", 99),
+        ("02", "03", 65),
+        ("04", "01", 70),
+        ("02", "02", 93),
+        ("01", "03", 88),
+        ("01", "01", 89),
+        ("02", "02", 82),
+        ("03", "03", 70),
+        ("02", "04", 69))
 
     val Score = spark.createDataFrame(Score_arr).
-      toDF("SID","CID", "score")
+      toDF("SID", "CID", "score")
     Score
   }
 
