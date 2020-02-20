@@ -46,8 +46,8 @@ object spark_sql {
       )
 
 
-    s1_sql.show()
-    s1_sql_1.show()
+   // s1_sql.show()
+   // s1_sql_1.show()
 
     val Score2 = Score_df.
       //注意这里的重命名列的方法
@@ -61,7 +61,7 @@ object spark_sql {
       filter($"CID" === "01" && $"CID2" === "02").
       filter($"score" > $"score2").
       select("Sname", "SID", "CID", "score", "CID2", "score2")
-    s1_sp.show()
+ //   s1_sp.show()
 
 
 
@@ -69,22 +69,22 @@ object spark_sql {
 
     val s1_1_sql = spark.sql(
       """
-        |select st.Sname,st.SID,count(sc.CID) as nums
+        |select st.Sname,st.SID,count(distinct sc.CID) as nums
         |from Student st join Score sc on st.SID = sc.SID
         |where (CID = "01" or CID = "02")
         |group by st.Sname,st.SID
         |having nums >= 2
         |order by Sname,SID
         |""".stripMargin)
-    s1_1_sql.show()
+ //   s1_1_sql.show()
 
     val s1_1_sp = Student_df.
       join(Score_df, Seq("SID"), joinType = "inner").
       filter($"CID" === "01" || $"CID" === "02").
-      groupBy($"Sname", $"SID").agg(count($"CID").as("nums")).
+      groupBy($"Sname", $"SID").agg( countDistinct($"CID").as("nums")).
       filter($"nums" >=2).
       sort($"Sname", $"SID")
-    s1_1_sp.show()
+ //   s1_1_sp.show()
 
 
     // 2.查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
@@ -96,14 +96,14 @@ object spark_sql {
          having avg_score >= 60
          """)
 
-    s2_sql.show()
+//    s2_sql.show()
 
     val s2_sp = Student_df.
       join(Score_df, Seq("SID"), joinType = "inner").
       groupBy( $"Sname",$"SID").
       agg(mean($"score").as("avg_score")).
       filter($"avg_score" >= 60)
-    s2_sp.show()
+//    s2_sp.show()
 
 
     // 3 不会
@@ -115,12 +115,12 @@ object spark_sql {
         from Student st join Score sc on st.SID = sc.SID
         group by st.Sname,st.SID
         """)
-    s4_sql.show()
+ //   s4_sql.show()
     val s4_sp = Student_df.
       join(Score_df,Seq("SID"),joinType = "inner").
       groupBy($"Sname",$"SID").
       agg(count($"CID").as("nums"),sum($"score").as("score_sum"))
-    s4_sp.show()
+ //   s4_sp.show()
 
     // 4.1 不会
 
@@ -133,15 +133,51 @@ object spark_sql {
         |where Tname like "李%"
         |""".stripMargin)
 
-  s5_sql.show()
+//  s5_sql.show()
  val s5_sp = Teacher_df.
    filter($"Tname" like "李%").
  // agg算子可以直接聚合,也可以group by之后再聚合
    agg(count($"Tname").as("nums"))
 
-s5_sp.show()
+//s5_sp.show()
 
+// 6 查询学过「李逵」老师授课的同学的信息
+    val s6_sql = spark.sql(
+      """
+        |select *
+        |from Teacher t join Course c on t.TID = c.TID
+        |join Score sc on sc.CID = c.CID
+        |join Student st on st.SID = sc.SID
+        |where t.Tname = "李逵"
+        |""".stripMargin)
+   // s6_sql.show()
+    val s6_sp = Teacher_df.
+      join(Course_df,Seq("TID")).
+      join(Score_df,Seq("CID")).
+      join(Student_df,Seq("SID")).
+      filter($"Tname" === "李逵")
+   // s6_sp.show()
 
+    // 7 查询没有学全所有课程的同学的信息
+  // 关于嵌套查询，见：https://www.cnblogs.com/glassysky/p/11559082.html
+   val s7_sql = spark.sql(
+     """
+       select st.Sname,st.SID,count(distinct sc.CID) as nums
+       from Student st join Score sc on st.SID = sc.SID
+       group by st.Sname,st.SID
+       having nums =
+       (select count(distinct sc.CID) from Score sc)
+       """.stripMargin)
+s7_sql.show()
+    val all_cids = Score_df.agg(countDistinct($"CID").as("al")).collectAsList()
+    println(all_cids)
+    println(all_cids.toArray())
+    val s7_sp = Student_df.
+      join(Score_df,Seq("SID")).
+      groupBy($"Sname",$"SID").
+      agg(countDistinct($"CID").as("nums")).
+      filter($"nums" === all_cids.get(0)(0))
+s7_sp.show()
 
 
 
