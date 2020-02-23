@@ -165,7 +165,7 @@ object spark_sql {
        select st.Sname,st.SID,count(distinct sc.CID) as nums
        from Student st join Score sc on st.SID = sc.SID
        group by st.Sname,st.SID
-       having nums =
+       having nums <
        (select count(distinct sc.CID) from Score sc)
        """.stripMargin)
 s7_sql.show()
@@ -176,7 +176,7 @@ s7_sql.show()
       join(Score_df,Seq("SID")).
       groupBy($"Sname",$"SID").
       agg(countDistinct($"CID").as("nums")).
-      filter($"nums" === all_cids.get(0)(0))
+      filter($"nums" < all_cids.get(0)(0))
 s7_sp.show()
 
 
