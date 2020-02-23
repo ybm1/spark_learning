@@ -16,7 +16,7 @@ object spark_udf {
     // For implicit conversions like converting RDDs to DataFrames
     import spark.implicits._
     val df_tr = read_and_transform_type(spark)
-    val df_tr_DF = df_tr.toDF("carat", "color", "clarity", "x", "y", "z", "depth", "arr1", "arr2")
+    val df_tr_DF = df_tr.toDF("carat", "color", "clarity", "x", "y", "z", "depth", "arr1", "arr2").sample(0.01)
     // DataFrame to SQL table
     df_tr_DF.createOrReplaceTempView("diamonds")
     // 用spark SQL 运行SQL
@@ -38,16 +38,21 @@ object spark_udf {
     // 注意 udf的作用相当于map操作，而不能做聚合，要做聚合要用UDAF
     spark.udf.register("myfun", (a: Double) => ((a * 9.0 / 5.0) + 32.0))
     spark.udf.register("strlen", (a: String) => a.length)
+    spark.udf.register("two_cols_intersect", (a: Seq[String],b:Seq[String]) => a.intersect(b))
+
 
     val sqlUDF1 = spark.
       //sql("SELECT color,clarity,myfun(x),max(x) FROM diamonds group by color,clarity")
       sql("SELECT color,clarity,myfun(x) FROM diamonds")
-    sqlUDF1.show()
+   // sqlUDF1.show()
     val sqlUDF2 = spark.
       //sql("SELECT color,clarity,myfun(x),max(x) FROM diamonds group by color,clarity")
       sql("SELECT color,clarity,strlen(color) FROM diamonds")
-    sqlUDF2.show()
-
+  //  sqlUDF2.show()
+    val sqlUDF3 = spark.
+      //sql("SELECT color,clarity,myfun(x),max(x) FROM diamonds group by color,clarity")
+      sql("SELECT color,clarity, two_cols_intersect(arr1,arr2) as inter FROM diamonds")
+    sqlUDF3.show()
     // UDAF
 
     println("Run Successfully")
