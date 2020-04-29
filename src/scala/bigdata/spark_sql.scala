@@ -213,28 +213,22 @@ object spark_sql {
       groupBy($"SID").
       agg(collect_set($"CID").as("c1")).
       //select($"c1").
-      map(a=>{
-        val sid = a.getAs[String]("SID")
-        val c1 = a.getAs[Seq[String]]("c1")
-        (sid,c1)
-      }).
-      map(a=>a._2.toArray).
-      collect()
-      //collectAsList().
-    println(t1_c1)
+      map(a=> a.getAs[Seq[String]]("c1").toArray).
+      collectAsList(). // 这个已经下面的get方法非常重要，可以获得一个具体的东西
+      get(0)
+    println(t1_c1.mkString(","))
     val s8_sp = Score_df.
       groupBy($"SID").
       agg(collect_set($"CID").as("c_all")).
-      rdd.
       map(a => {
         val sid = a.getAs[String]("SID")
-        val c_all = a.getAs[Seq[String]]("c_all")
+        val c_all = a.getAs[Seq[String]]("c_all").
+                    toArray.intersect(t1_c1).length
         (sid, c_all)
       }).
-      map(a => (a._1, a._2.toArray.intersect(t1_c1))).
       toDF("SID", "nums").
       // 注意 === 和=!=是Column类中定义的新函数
-     // filter($"SID" =!= "01" && $"nums" >= 1).
+     filter($"SID" =!= "01" && $"nums" >= 1).
       sort($"SID")
     //s8_sp.take(3).foreach(println)
     s8_sp.show()
