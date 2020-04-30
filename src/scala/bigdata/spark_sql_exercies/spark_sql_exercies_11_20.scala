@@ -46,7 +46,7 @@ object spark_sql_exercies_11_20 {
         |order by S.Sname
         |""".stripMargin)
 
-      s11_sql.show()
+     // s11_sql.show()
 
     println("第11题spark解法==============>")
       val s11_sp = Score_df.
@@ -60,20 +60,47 @@ object spark_sql_exercies_11_20 {
         agg(mean($"score")).
         sort($"Sname")
 
-      s11_sp.show()
+      //s11_sp.show()
 
+      // 12 检索" 01 "课程分数小于 60，按分数降序排列的学生信息
+    println("第12题sql解法==============>")
 
+    val s12_sql_1 = spark.sql(
+      """
+        |select SID,CID,score
+        |from Score
+        |where
+        |SID in
+        |(select SID
+        |from Score
+        |where CID ="01" and score <=60)
+        |order by SID,score desc
+        |""".stripMargin)
 
+      s12_sql_1.show()
 
+    val s12_sql_2 = spark.sql(
+      """
+        |select S.SID as SID,S.CID as CID,S.score as score
+        |from Score S
+        |right join
+        |(select SID
+        |from Score
+        |where CID ="01" and score <=60) as t1
+        |on S.SID = t1.SID
+        |order by SID,score desc
+        |""".stripMargin)
+// 注意这里用join来代替了in，因为in往往会使执行速度变慢，把临时表作为右连接的右表(或者左连接的左表)即可
 
+    s12_sql_2.show()
+    println("第12题spark解法==============>")
+    val s12_sp = Score_df.
+      filter($"CID"==="01" && $"score" <=60).
+      select($"SID").
+      join(Score_df,Seq("SID"),joinType = "left").
+      sort(asc("SID"),desc("score"))
 
-
-
-
-
-
-
-
+    s12_sp.show()
 
 
 
@@ -146,11 +173,12 @@ object spark_sql_exercies_11_20 {
   def get_Score_table(spark: SparkSession): DataFrame = {
     val Score_arr: Array[(String, String, Double)] =
       Array(("01", "02", 30),
+        ("01", "01", 30),
         ("02", "01", 38),
         ("03", "01", 28),
         ("04", "02", 99),
         ("02", "03", 45),
-        ("04", "01", 70),
+        ("04", "01", 30),
         ("02", "02", 93),
         ("02", "02", 82),
         ("03", "03", 40),
@@ -161,14 +189,14 @@ object spark_sql_exercies_11_20 {
         ("02", "06", 82),
         ("03", "05", 70),
         ("02", "07", 69),
-        ("05", "01", 93),
+        ("05", "01", 10),
         ("05", "02", 38),
         ("05", "03", 89),
         ("05", "04", 42),
         ("06", "04", 70),
         ("06", "03", 69),
         ("06", "02", 70),
-        ("06", "01", 69))
+        ("06", "01", 55))
 
     val Score = spark.createDataFrame(Score_arr).
       toDF("SID", "CID", "score")

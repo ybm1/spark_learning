@@ -1,21 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/Costomed_median.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/scala/bigdata/Customer_agg.scala" afterDir="false" />
+    <list default="true" id="911e62c1-6ae5-49d1-bbbf-b3c4e591ad60" name="Default Changelist" comment="SQL练习(第8，9题真他妈难！！！)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/derby.log" beforeDir="false" afterPath="$PROJECT_DIR$/derby.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/db.lck" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/db.lck" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/log/log.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/log/log.ctrl" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/metastore_db/log/log1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/log/log1.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metastore_db/log/log1.dat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/log/logmirror.ctrl" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/log/logmirror.ctrl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/seg0/c180.dat" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/seg0/c180.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/seg0/c191.dat" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/seg0/c191.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/seg0/c1a1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/seg0/c1a1.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/metastore_db/seg0/c1b1.dat" beforeDir="false" afterPath="$PROJECT_DIR$/metastore_db/seg0/c1b1.dat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_dataframe.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_sql.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_sql.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scala/bigdata/spark_sql_exercies/spark_sql_exercies_11_20.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/scala/bigdata/spark_sql_exercies/spark_sql_exercies_11_20.scala" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,27 +53,20 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/scala/bigdata/spark_sql_exercies" />
     <property name="project.structure.last.edited" value="Global Libraries" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="vcs.Git" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
-  <component name="RunManager" selected="Application.Costomed_median">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/scala/bigdata/spark_sql_exercies" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.spark_sql_exercies_11_20">
     <configuration name="Costomed_median" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="scala.bigdata.Costomed_median" />
-      <module name="spark_learning" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="scala.bigdata.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="spark_dataframe" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_dataframe" />
       <module name="spark_learning" />
       <extension name="coverage">
         <pattern>
@@ -101,6 +91,32 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="spark_sql_exercies_11_20" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_sql_exercies.spark_sql_exercies_11_20" />
+      <module name="spark_learning" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="scala.bigdata.spark_sql_exercies.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="spark_sql_exercies_1_10" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_sql_exercies.spark_sql_exercies_1_10" />
+      <module name="spark_learning" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="scala.bigdata.spark_sql_exercies.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="spark_udf" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_udf" />
       <module name="spark_learning" />
@@ -114,26 +130,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="spark_word_count" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="scala.bigdata.spark_word_count" />
-      <module name="spark_learning" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="scala.bigdata.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Costomed_median" />
+        <item itemvalue="Application.spark_sql_exercies_11_20" />
+        <item itemvalue="Application.spark_sql_exercies_1_10" />
         <item itemvalue="Application.spark_sql" />
         <item itemvalue="Application.spark_udf" />
-        <item itemvalue="Application.spark_word_count" />
-        <item itemvalue="Application.spark_dataframe" />
+        <item itemvalue="Application.Costomed_median" />
       </list>
     </recent_temporary>
   </component>
@@ -202,8 +205,84 @@
       <option name="project" value="LOCAL" />
       <updated>1577954930748</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="自定义聚合函数举例">
+      <created>1578323206994</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1578323206995</updated>
+    </task>
+    <task id="LOCAL-00008" summary="SQL练习1">
+      <created>1582100948433</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1582100948433</updated>
+    </task>
+    <task id="LOCAL-00009" summary="SQL练习2">
+      <created>1582105443610</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1582105443610</updated>
+    </task>
+    <task id="LOCAL-00010" summary="SQL练习">
+      <created>1582186134466</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1582186134466</updated>
+    </task>
+    <task id="LOCAL-00011" summary="SQL练习">
+      <created>1582194485524</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1582194485524</updated>
+    </task>
+    <task id="LOCAL-00012" summary="SQL练习">
+      <created>1582461917193</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1582461917198</updated>
+    </task>
+    <task id="LOCAL-00013" summary="SQL练习(第8，9题真他妈难！！！)">
+      <created>1588175623877</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1588175623884</updated>
+    </task>
+    <task id="LOCAL-00014" summary="SQL练习(第8，9题真他妈难！！！)&#10;优化8，9题代码(太难了，日了狗了！！)">
+      <created>1588176541488</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1588176541488</updated>
+    </task>
+    <task id="LOCAL-00015" summary="SQL练习">
+      <created>1588253385117</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1588253385117</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="整理了word count例子和Spark SQL操作" />
@@ -211,74 +290,87 @@
     <MESSAGE value="添加spark dataframe操作和spark SQL UDF 基本操作" />
     <MESSAGE value="添加spark sql的窗口函数练习" />
     <MESSAGE value="添加sql相关练习题，分别用spark和SQL解决" />
+    <MESSAGE value="自定义聚合函数举例" />
+    <MESSAGE value="SQL练习1" />
+    <MESSAGE value="SQL练习2" />
+    <MESSAGE value="SQL练习(第8，9题真他妈难！！！)" />
+    <MESSAGE value="SQL练习(第8，9题真他妈难！！！)&#10;优化8，9题代码(太难了，日了狗了！！)" />
     <MESSAGE value="SQL练习" />
     <option name="LAST_COMMIT_MESSAGE" value="SQL练习" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1576936387921">
+    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1588240420993">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1440.900@0.0.1440.900" timestamp="1576936387921" />
-    <state x="470" y="260" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1576591106429">
+    <state x="458" y="212" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1440.900@0.0.1440.900" timestamp="1588240420993" />
+    <state x="365" y="48" width="1078" height="788" key="CommitChangelistDialog2" timestamp="1588253384390">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="470" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1576591106429" />
-    <state x="365" y="48" key="CommitChangelistDialog2" timestamp="1577954930030">
+    <state x="365" y="48" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1588253384390" />
+    <state x="362" y="23" width="1078" height="788" key="CommitChangelistDialog2/0.23.1440.788@0.23.1440.788" timestamp="1588175621854" />
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog" timestamp="1588254733816">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="365" y="48" key="CommitChangelistDialog2/0.0.1440.900@0.0.1440.900" timestamp="1577954930030" />
-    <state x="583" y="350" key="Github.ShareDialog" timestamp="1576587948553">
+    <state x="100" y="100" width="1240" height="700" key="DiffContextDialog/0.0.1440.900@0.0.1440.900" timestamp="1588254733816" />
+    <state width="1398" height="143" key="GridCell.Tab.0.bottom" timestamp="1588257812164">
+      <screen x="0" y="23" width="1440" height="788" />
+    </state>
+    <state width="1398" height="246" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1588256883315" />
+    <state width="1398" height="143" key="GridCell.Tab.0.bottom/0.23.1440.788@0.23.1440.788" timestamp="1588257812164" />
+    <state width="1398" height="213" key="GridCell.Tab.0.bottom/0.23.1440.792@0.23.1440.792" timestamp="1588171912717" />
+    <state width="1002" height="169" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1582187475600" />
+    <state width="999" height="177" key="GridCell.Tab.0.bottom/0.23.1440.801@0.23.1440.801" timestamp="1582193536708" />
+    <state width="999" height="177" key="GridCell.Tab.0.bottom/0.23.1440.804@0.23.1440.804" timestamp="1582280550755" />
+    <state width="1398" height="143" key="GridCell.Tab.0.center" timestamp="1588257812147">
+      <screen x="0" y="23" width="1440" height="788" />
+    </state>
+    <state width="1398" height="246" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1588256883311" />
+    <state width="1398" height="143" key="GridCell.Tab.0.center/0.23.1440.788@0.23.1440.788" timestamp="1588257812147" />
+    <state width="1398" height="213" key="GridCell.Tab.0.center/0.23.1440.792@0.23.1440.792" timestamp="1588171912702" />
+    <state width="1002" height="169" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1582187475598" />
+    <state width="999" height="177" key="GridCell.Tab.0.center/0.23.1440.801@0.23.1440.801" timestamp="1582193536706" />
+    <state width="999" height="177" key="GridCell.Tab.0.center/0.23.1440.804@0.23.1440.804" timestamp="1582280550752" />
+    <state width="1398" height="143" key="GridCell.Tab.0.left" timestamp="1588257812137">
+      <screen x="0" y="23" width="1440" height="788" />
+    </state>
+    <state width="1398" height="246" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1588256883310" />
+    <state width="1398" height="143" key="GridCell.Tab.0.left/0.23.1440.788@0.23.1440.788" timestamp="1588257812137" />
+    <state width="1398" height="213" key="GridCell.Tab.0.left/0.23.1440.792@0.23.1440.792" timestamp="1588171912693" />
+    <state width="1002" height="169" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1582187475596" />
+    <state width="999" height="177" key="GridCell.Tab.0.left/0.23.1440.801@0.23.1440.801" timestamp="1582193536704" />
+    <state width="999" height="177" key="GridCell.Tab.0.left/0.23.1440.804@0.23.1440.804" timestamp="1582280550743" />
+    <state width="1398" height="143" key="GridCell.Tab.0.right" timestamp="1588257812155">
+      <screen x="0" y="23" width="1440" height="788" />
+    </state>
+    <state width="1398" height="246" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1588256883313" />
+    <state width="1398" height="143" key="GridCell.Tab.0.right/0.23.1440.788@0.23.1440.788" timestamp="1588257812155" />
+    <state width="1398" height="213" key="GridCell.Tab.0.right/0.23.1440.792@0.23.1440.792" timestamp="1588171912709" />
+    <state width="1002" height="169" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1582187475599" />
+    <state width="999" height="177" key="GridCell.Tab.0.right/0.23.1440.801@0.23.1440.801" timestamp="1582193536707" />
+    <state width="999" height="177" key="GridCell.Tab.0.right/0.23.1440.804@0.23.1440.804" timestamp="1582280550754" />
+    <state x="308" y="192" key="IDE.errors.dialog" timestamp="1588165187720">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="583" y="350" key="Github.ShareDialog/0.0.1440.900@0.0.1440.900" timestamp="1576587948553" />
-    <state x="446" y="159" key="Github.UntrackedFilesDialog" timestamp="1576587983315">
-      <screen x="0" y="23" width="1440" height="798" />
-    </state>
-    <state x="446" y="159" key="Github.UntrackedFilesDialog/0.23.1440.798@0.23.1440.798" timestamp="1576587983315" />
-    <state width="1014" height="198" key="GridCell.Tab.0.bottom" timestamp="1578323143368">
+    <state x="308" y="192" key="IDE.errors.dialog/0.0.1440.900@0.0.1440.900" timestamp="1588165187720" />
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1588253563266">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1014" height="198" key="GridCell.Tab.0.bottom/0.0.1440.900@0.0.1440.900" timestamp="1578323143368" />
-    <state width="1015" height="263" key="GridCell.Tab.0.bottom/0.23.1440.798@0.23.1440.798" timestamp="1577973106287" />
-    <state width="1014" height="198" key="GridCell.Tab.0.center" timestamp="1578323143365">
+    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1588253563266" />
+    <state x="413" y="270" key="com.intellij.ide.util.TipDialog" timestamp="1587643651789">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1014" height="198" key="GridCell.Tab.0.center/0.0.1440.900@0.0.1440.900" timestamp="1578323143365" />
-    <state width="1015" height="263" key="GridCell.Tab.0.center/0.23.1440.798@0.23.1440.798" timestamp="1577973106283" />
-    <state width="1014" height="198" key="GridCell.Tab.0.left" timestamp="1578323143362">
+    <state x="413" y="270" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1587643651789" />
+    <state x="385" y="210" key="run.anything.popup" timestamp="1588166785892">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1014" height="198" key="GridCell.Tab.0.left/0.0.1440.900@0.0.1440.900" timestamp="1578323143362" />
-    <state width="1015" height="263" key="GridCell.Tab.0.left/0.23.1440.798@0.23.1440.798" timestamp="1577973106280" />
-    <state width="1014" height="198" key="GridCell.Tab.0.right" timestamp="1578323143367">
+    <state x="385" y="210" key="run.anything.popup/0.0.1440.900@0.0.1440.900" timestamp="1588166785892" />
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1588235774254">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state width="1014" height="198" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1578323143367" />
-    <state width="1015" height="263" key="GridCell.Tab.0.right/0.23.1440.798@0.23.1440.798" timestamp="1577973106285" />
-    <state x="208" y="31" key="SettingsEditor" timestamp="1576587846840">
+    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1588235774254" />
+    <state x="450" y="369" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1588150925384">
       <screen x="0" y="0" width="1440" height="900" />
     </state>
-    <state x="208" y="31" key="SettingsEditor/0.0.1440.900@0.0.1440.900" timestamp="1576587846840" />
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2" timestamp="1577954943828">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="320" y="190" key="Vcs.Push.Dialog.v2/0.0.1440.900@0.0.1440.900" timestamp="1577954943828" />
-    <state x="413" y="282" key="com.intellij.ide.util.TipDialog" timestamp="1577779582134">
-      <screen x="0" y="23" width="1440" height="798" />
-    </state>
-    <state x="413" y="282" key="com.intellij.ide.util.TipDialog/0.0.1440.900@0.0.1440.900" timestamp="1576939077238" />
-    <state x="413" y="282" key="com.intellij.ide.util.TipDialog/0.23.1440.798@0.23.1440.798" timestamp="1577779582134" />
-    <state x="525" y="374" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1576938985393">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="525" y="374" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1440.900@0.0.1440.900" timestamp="1576938985393" />
-    <state x="149" y="176" key="new project wizard" timestamp="1577160928498">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="149" y="176" key="new project wizard/0.0.1440.900@0.0.1440.900" timestamp="1577160928498" />
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup" timestamp="1577779858737">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="385" y="196" width="670" height="676" key="search.everywhere.popup/0.0.1440.900@0.0.1440.900" timestamp="1577779858737" />
+    <state x="450" y="369" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1440.900@0.0.1440.900" timestamp="1588150925384" />
   </component>
 </project>
