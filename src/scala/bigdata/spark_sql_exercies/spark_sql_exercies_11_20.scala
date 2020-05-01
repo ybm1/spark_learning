@@ -3,6 +3,9 @@ package scala.bigdata.spark_sql_exercies
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.{DataFrame, SparkSession}
 import org.apache.spark.sql.functions._ // 包含了sql中使用的聚合函数
+
+import org.apache.spark.sql.expressions.Window // 窗口函数
+
 object spark_sql_exercies_11_20 {
   def main(args: Array[String]): Unit = {
 
@@ -127,19 +130,18 @@ object spark_sql_exercies_11_20 {
 
     //14 查询各科成绩最高分、最低分和平均分：
     //
-    //以如下形式显示：课程 ID，课程 name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率
+    //以如下形式显示：课程 ID，课程 name，及格率，中等率，优良率，优秀率
     //
     //及格为>=60，中等为：70-80，优良为：80-90，优秀为：>=90
     //
     //要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
 
-
+    println("第14题sql解法==============>")
     val s14_sql = spark.sql(
       """
-        |select C.Cname,S.CID,max(S.score) as max_score,min(S.score) as min_score,
-        |avg(S.score) as ave_score,
+        |select C.Cname,S.CID,
         |count(case when S.score>=60 then 1 end)/count(S.CID) as jige_ratio,
-        |count(case when S.score>=70 and S.score <80 then 1 end)/count(S.CID) as zhogndeng_ratio,
+        |count(case when S.score>=70 and S.score <80 then 1 end)/count(S.CID) as zhongdeng_ratio,
         |count(case when S.score>=80 and S.score <90 then 1 end)/count(S.CID) as youliang_ratio,
         |count(case when S.score>=90 then 1 end)/count(S.CID) as youxiu_ratio,
         |count(S.CID) as nums
@@ -149,19 +151,74 @@ object spark_sql_exercies_11_20 {
         |order by nums desc,CID
         |""".stripMargin)
 
-      s14_sql.show()
+      //s14_sql.show()
 
+    println("第14题spark解法==============>")
+    val s14_sp = Score_df.
+      join(Course_df,Seq("CID")).
+      groupBy($"Cname",$"CID").
+      agg((count(when($"score">=60,1).otherwise(null))/count($"CID")).as("jige_ratio"),
+        (count(when($"score">=70 && $"score"<80 ,1).otherwise(null))/count($"CID")).as("zhongdeng_ratio"),
+        (count(when($"score">=80 && $"score"<90 ,1).otherwise(null))/count($"CID")).as("youliang_ratio"),
+        (count(when($"score">=90,1).otherwise(null))/count($"CID")).as("youxiu_ratio"),
+        count($"CID").as("nums")).
+      sort(desc("nums"),asc("CID"))
 
+      //s14_sp.show()
 
+    //15 按各科成绩进行排序，并显示排名， Score 重复时保留名次空缺
+    // 15.1 按各科成绩进行排序，并显示排名， Score 重复时合并名次
+    println("第15题sql解法==============>")
 
+      val s15_sql = spark.sql(
+        """
+          |select SID,CID,score,
+          |rank() over(partition by CID order by score desc) as rank1,
+          |dense_rank() over(partition by CID order by score desc) as rank2,
+          |row_number() over(partition by CID order by score desc) as rank3
+          |from Score
+          |""".stripMargin)
 
+      s15_sql.show()
 
+    println("第15题spark解法==============>")
+// spark 窗口函数 https://blog.csdn.net/fox64194167/article/details/80790754
 
+    val rankSpec1 = Window.partitionBy("CID").orderBy(Score_df("score").desc)
+    val s15_sp = Score_df.
+      withColumn("rank1", rank.over(rankSpec1)).
+      withColumn("rank2", dense_rank.over(rankSpec1)).
+      withColumn("rank3", row_number.over(rankSpec1))
+    s15_sp.show()
 
+    //16 查询学生的总成绩，并进行排名，总分重复时保留名次空缺
+    //16.1 查询学生的总成绩，并进行排名，总分重复时不保留名次空缺
 
+    println("第16题sql解法==============>")
 
+    val s16_sql = spark.sql(
+      """
+        |select S.SID,S.score_sum,
+        |rank() over(order by S.score_sum desc) as rank1,
+        |dense_rank() over(order by S.score_sum desc) as rank2,
+        |row_number() over(order by S.score_sum desc) as rank3
+        |from
+        |(select SID,sum(score) as score_sum
+        |from Score
+        |group by SID) as S
+        |""".stripMargin)
 
+    s16_sql.show()
 
+    println("第16题spark解法==============>")
+
+    val Score_df_tmp = Score_df.groupBy($"SID").agg(sum($"score").as("score_sum"))
+    val rankSpec2 = Window.orderBy(Score_df_tmp("score_sum").desc)
+    val s16_sp = Score_df_tmp.
+      withColumn("rank1", dense_rank.over(rankSpec2)).
+      withColumn("rank2", rank.over(rankSpec2)).
+      withColumn("rank3", row_number.over(rankSpec2))
+    s16_sp.show()
 
 
 
