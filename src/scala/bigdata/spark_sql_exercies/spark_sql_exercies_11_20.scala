@@ -77,7 +77,7 @@ object spark_sql_exercies_11_20 {
         |order by SID,score desc
         |""".stripMargin)
 
-      s12_sql_1.show()
+     // s12_sql_1.show()
 
     val s12_sql_2 = spark.sql(
       """
@@ -92,7 +92,9 @@ object spark_sql_exercies_11_20 {
         |""".stripMargin)
 // 注意这里用join来代替了in，因为in往往会使执行速度变慢，把临时表作为右连接的右表(或者左连接的左表)即可
 
-    s12_sql_2.show()
+   // s12_sql_2.show()
+
+
     println("第12题spark解法==============>")
     val s12_sp = Score_df.
       filter($"CID"==="01" && $"score" <=60).
@@ -100,7 +102,67 @@ object spark_sql_exercies_11_20 {
       join(Score_df,Seq("SID"),joinType = "left").
       sort(asc("SID"),desc("score"))
 
-    s12_sp.show()
+   // s12_sp.show()
+
+// 13 按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩
+    println("第13题sql解法==============>")
+    val s13_sql = spark.sql(
+      """
+        |select SID, avg(score) as score_avg
+        |from Score
+        |group by SID
+        |order by score_avg desc
+        |""".stripMargin)
+
+     // s13_sql.show()
+
+    println("第13题spark解法==============>")
+
+    val s13_sp = Score_df.
+      groupBy($"SID").
+      agg(mean($"score").as("score_avg")).
+      sort(desc("score_avg"))
+
+   // s13_sp.show()
+
+    //14 查询各科成绩最高分、最低分和平均分：
+    //
+    //以如下形式显示：课程 ID，课程 name，最高分，最低分，平均分，及格率，中等率，优良率，优秀率
+    //
+    //及格为>=60，中等为：70-80，优良为：80-90，优秀为：>=90
+    //
+    //要求输出课程号和选修人数，查询结果按人数降序排列，若人数相同，按课程号升序排列
+
+
+    val s14_sql = spark.sql(
+      """
+        |select C.Cname,S.CID,max(S.score) as max_score,min(S.score) as min_score,
+        |avg(S.score) as ave_score,
+        |count(case when S.score>=60 then 1 end)/count(S.CID) as jige_ratio,
+        |count(case when S.score>=70 and S.score <80 then 1 end)/count(S.CID) as zhogndeng_ratio,
+        |count(case when S.score>=80 and S.score <90 then 1 end)/count(S.CID) as youliang_ratio,
+        |count(case when S.score>=90 then 1 end)/count(S.CID) as youxiu_ratio,
+        |count(S.CID) as nums
+        |from Score S join
+        |Course C on S.CID=C.CID
+        |group by C.Cname,S.CID
+        |order by nums desc,CID
+        |""".stripMargin)
+
+      s14_sql.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -122,15 +184,9 @@ object spark_sql_exercies_11_20 {
       Array(("01", "赵雷", "1990-01-01", "男"),
         ("02", "钱电", "1990-12-21", "男"),
         ("03", "孙风", "1990-12-20", "男"),
-        ("04", "李云", "1990-12-06", "男"),
+        ("04", "李云", "1990-12-06", "女"),
         ("05", "周梅", "1991-12-01", "女"),
-        ("06", "吴兰", "1992-01-01", "女"),
-        ("07", "郑竹", "1989-01-01", "女"),
-        ("09", "张三", "2017-12-20", "女"),
-        ("10", "李四", "2017-12-25", "女"),
-        ("11", "李四", "2012-06-06", "女"),
-        ("12", "赵六", "2013-06-13", "女"),
-        ("13", "孙七", "2014-06-01", "女"))
+        ("06", "吴兰", "1992-01-01", "女"))
 
     val Student = spark.createDataFrame(Student_arr).
       toDF("SID", "Sname", "Sage", "Ssex")
@@ -139,18 +195,13 @@ object spark_sql_exercies_11_20 {
 
   def get_Course_table(spark: SparkSession): DataFrame = {
     val Course_arr: Array[(String, String, String)] =
-      Array(("01", "语文", "02"),
+      Array(("01", "语文", "01"),
         ("02", "数学", "02"),
-        ("03", "数学", "03"),
-        ("04", "英语", "02"),
-        ("02", "语文", "01"),
-        ("06", "数学", "02"),
-        ("04", "物理", "01"),
-        ("09", "语文", "02"),
-        ("10", "英语", "04"),
-        ("11", "英语", "03"),
-        ("12", "英语", "05"),
-        ("13", "数学", "03"))
+        ("03", "化学", "03"),
+        ("04", "英语", "04"),
+        ("05", "地理", "05"),
+        ("06", "体育", "06"),
+        ("07", "历史", "07"))
 
     val Course = spark.createDataFrame(Course_arr).
       toDF("CID", "Cname", "TID")
@@ -163,7 +214,9 @@ object spark_sql_exercies_11_20 {
         ("02", "李逵"),
         ("03", "鲁智深"),
         ("04", "武松"),
-        ("05", "卢俊义"))
+        ("05", "司马懿"),
+        ("06", "诸葛村夫"),
+        ("07", "王朗"))
 
     val Teacher = spark.createDataFrame(Teacher_arr).
       toDF("TID", "Tname")
@@ -172,31 +225,49 @@ object spark_sql_exercies_11_20 {
 
   def get_Score_table(spark: SparkSession): DataFrame = {
     val Score_arr: Array[(String, String, Double)] =
-      Array(("01", "02", 30),
+      Array(
         ("01", "01", 30),
-        ("02", "01", 38),
-        ("03", "01", 28),
-        ("04", "02", 99),
-        ("02", "03", 45),
-        ("04", "01", 30),
-        ("02", "02", 93),
-        ("02", "02", 82),
-        ("03", "03", 40),
-        ("02", "04", 69),
-        ("02", "08", 70),
-        ("02", "07", 93),
+        ("01", "02", 30),
+        ("01", "03", 30),
+        ("01", "04", 28),
         ("01", "07", 28),
-        ("02", "06", 82),
+
+        ("02", "01", 38),
+        ("02", "03", 45),
+        ("02", "02", 93),
+        ("02", "04", 82),
+        ("02", "06", 69),
+
+        ("03", "01", 28),
+        ("03", "03", 40),
         ("03", "05", 70),
-        ("02", "07", 69),
+        ("03", "02", 28),
+        ("03", "04", 40),
+        ("04", "07", 30),
+
         ("05", "01", 10),
         ("05", "02", 38),
         ("05", "03", 89),
         ("05", "04", 42),
-        ("06", "04", 70),
-        ("06", "03", 69),
-        ("06", "02", 70),
-        ("06", "01", 55))
+        ("05", "05", 10),
+        ("05", "06", 38),
+        ("05", "07", 29),
+
+
+        ("06", "01", 70),
+        ("06", "02", 69),
+        ("06", "03", 70),
+        ("06", "04", 55),
+        ("06", "06", 69),
+        ("06", "07", 70),
+
+        ("07", "01", 70),
+        ("07", "02", 69),
+        ("07", "03", 70),
+        ("07", "04", 55),
+        ("07", "05", 70),
+        ("07", "06", 69),
+        ("07", "07", 70))
 
     val Score = spark.createDataFrame(Score_arr).
       toDF("SID", "CID", "score")
