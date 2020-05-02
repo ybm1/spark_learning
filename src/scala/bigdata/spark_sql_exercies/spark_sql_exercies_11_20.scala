@@ -179,7 +179,7 @@ object spark_sql_exercies_11_20 {
           |from Score
           |""".stripMargin)
 
-      s15_sql.show()
+   //   s15_sql.show()
 
     println("第15题spark解法==============>")
 // spark 窗口函数 https://blog.csdn.net/fox64194167/article/details/80790754
@@ -189,7 +189,7 @@ object spark_sql_exercies_11_20 {
       withColumn("rank1", rank.over(rankSpec1)).
       withColumn("rank2", dense_rank.over(rankSpec1)).
       withColumn("rank3", row_number.over(rankSpec1))
-    s15_sp.show()
+   // s15_sp.show()
 
     //16 查询学生的总成绩，并进行排名，总分重复时保留名次空缺
     //16.1 查询学生的总成绩，并进行排名，总分重复时不保留名次空缺
@@ -208,7 +208,7 @@ object spark_sql_exercies_11_20 {
         |group by SID) as S
         |""".stripMargin)
 
-    s16_sql.show()
+  //  s16_sql.show()
 
     println("第16题spark解法==============>")
 
@@ -218,7 +218,88 @@ object spark_sql_exercies_11_20 {
       withColumn("rank1", dense_rank.over(rankSpec2)).
       withColumn("rank2", rank.over(rankSpec2)).
       withColumn("rank3", row_number.over(rankSpec2))
-    s16_sp.show()
+   // s16_sp.show()
+
+
+
+    // 17 统计各科成绩各分数段人数：课程编号，课程名称，[100-85]，[85-70]，[70-60]，[60-0] 及所占百分比
+    // 与 14题 几乎一样
+
+    // 18 查询各科成绩前三名的记录
+    println("第18题sql解法==============>")
+  val s18_sql = spark.sql(
+    """
+      |select t1.SID,t1.CID,t1.score,t1.rank1 from
+      |(select SID,CID,score,
+      |rank() over (partition by CID order by score desc) as rank1
+      |from Score) as t1
+      |where t1.rank1 <=3
+      |order by t1.CID
+      |""".stripMargin)
+
+    s18_sql.show()
+
+
+    println("第18题spark解法==============>")
+    val rankSpec3 = Window.partitionBy("CID").orderBy(Score_df("score").desc)
+    val s18_sp = Score_df.
+      withColumn("rank1", rank.over(rankSpec3)).
+      filter($"rank1"<=3).
+      sort("CID")
+
+      s18_sp.show()
+
+    //19 查询每门课程被选修的学生数
+    println("第19题sql解法==============>")
+    val s19_sql = spark.sql(
+      """
+        |select CID,count(distinct SID) as nums
+        |from Score
+        |group by CID
+        |""".stripMargin)
+
+    s19_sql.show()
+
+
+    println("第19题spark解法==============>")
+    val s19_sp = Score_df.groupBy($"CID").agg(countDistinct($"SID").as("nums"))
+    s19_sp.show()
+
+
+    // 20 查询出选修大于等于两门课程的学生学号和姓名
+    println("第20题sql解法==============>")
+     val s20_sql = spark.sql(
+       """
+         |select t1.SID,St.Sname,t1.nums
+         |from
+         |(select SID,count(score) as nums
+         |from
+         |Score
+         |group by SID) as t1
+         |join Student st on st.SID = t1.SID
+         |where t1.nums >=2
+         |""".stripMargin)
+
+        s20_sql.show()
+    println("第20题spark解法==============>")
+
+    val s20_sp = Score_df.
+      groupBy($"SID").
+      agg(count($"score").as("nums")).
+      join(Student_df,Seq("SID"),joinType = "inner").
+      select($"SID",$"Sname",$"nums").
+      filter($"nums" >= 2)
+     s20_sp.show()
+
+
+
+
+
+
+
+
+
+
 
 
 
