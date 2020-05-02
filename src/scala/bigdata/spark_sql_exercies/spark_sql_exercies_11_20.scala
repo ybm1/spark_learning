@@ -292,20 +292,6 @@ object spark_sql_exercies_11_20 {
      s20_sp.show()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     println("Run Successfully!")
     spark.stop()
 
@@ -321,9 +307,9 @@ object spark_sql_exercies_11_20 {
     val Student_arr: Array[(String, String, String, String)] =
       Array(("01", "赵雷", "1990-01-01", "男"),
         ("02", "钱电", "1990-12-21", "男"),
-        ("03", "孙风", "1990-12-20", "男"),
+        ("03", "孙小风", "1990-12-20", "男"),
         ("04", "李云", "1990-12-06", "女"),
-        ("05", "周梅", "1991-12-01", "女"),
+        ("05", "周大风", "1991-12-01", "女"),
         ("06", "吴兰", "1992-01-01", "女"))
 
     val Student = spark.createDataFrame(Student_arr).
@@ -350,8 +336,8 @@ object spark_sql_exercies_11_20 {
     val Teacher_arr: Array[(String, String)] =
       Array(("01", "张三"),
         ("02", "李逵"),
-        ("03", "鲁智深"),
-        ("04", "武松"),
+        ("03", "李白"),
+        ("04", "李商隐"),
         ("05", "司马懿"),
         ("06", "诸葛村夫"),
         ("07", "王朗"))
@@ -411,6 +397,8 @@ object spark_sql_exercies_11_20 {
       toDF("SID", "CID", "score")
     Score
   }
+
+
 
 
 }
