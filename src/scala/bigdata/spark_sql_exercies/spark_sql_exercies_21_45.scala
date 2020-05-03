@@ -448,10 +448,11 @@ object spark_sql_exercies_21_45 {
     val s40_41_sql = spark.sql(
       """
         |select SID,
-        |(2020-year(Sage)) as age1,
-        |TIMESTAMPDIFF(YEAR,Sage,CURDATE()) as age2
+        |(year(current_date()) - year(Sage)) as age1
         |from Student
         |""".stripMargin)
+
+   // |TIMESTAMPDIFF(YEAR,Sage,current_date()) as age2
 
     s40_41_sql.show()
 
@@ -464,13 +465,13 @@ object spark_sql_exercies_21_45 {
       """
         |select * from Student
         |where
-        |WEEKOFYEAR(Sage)=WEEKOFYEAR(CURDATE())+1
+        |weekofyear(Sage)=weekofyear(current_date())+1
         |or
-        |WEEKOFYEAR(Sage)=WEEKOFYEAR(CURDATE())+1
+        |weekofyear(Sage)=weekofyear(current_date())+1
         |or
-        |MONTH(Sage)=MONTH(CURDATE())
+        |MONTH(Sage)=MONTH(current_date())
         |or
-        |MONTH(Sage)=MONTH(CURDATE())+1
+        |MONTH(Sage)=MONTH(current_date())+1
         |""".stripMargin)
 
     s42_45_sql.show()
