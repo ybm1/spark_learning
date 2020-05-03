@@ -225,7 +225,7 @@ object spark_sql_exercies_21_45 {
           |""".stripMargin)
 
 
-        s29_sql.show()
+ //       s29_sql.show()
     println("第29题spark解法==============>")
 
     val s29_sp = Score_df.
@@ -234,9 +234,10 @@ object spark_sql_exercies_21_45 {
       join(Course_df,Seq("CID"),joinType = "inner").
       select($"Sname",$"SID",$"CID",$"Cname",$"score")
 
-    s29_sp.show()
+   // s29_sp.show()
 
     // 30 查询不及格的课程
+    println("第30题sql解法==============>")
     val s30_sql = spark.sql(
       """
         |select SID,CID,score
@@ -244,10 +245,248 @@ object spark_sql_exercies_21_45 {
         |where score <60
         |""".stripMargin)
 
-    s30_sql.show()
-
+ //   s30_sql.show()
+    println("第30题spark解法==============>")
     val s30_sp = Score_df.filter($"score"<60)
-    s30_sp.show()
+ //   s30_sp.show()
+
+  // 31 查询课程编号为 01 且课程成绩在 40 分以上的学生的学号和姓名
+    println("第31题sql解法==============>")
+      val s31_sql = spark.sql(
+        """
+          |select Sname,SID
+          |from
+          |Student
+          |where SID in
+          |(select SID from Score
+          |where CID = "01" and score >40)
+          |""".stripMargin)
+
+      s31_sql.show()
+
+
+    println("第31题spark解法==============>")
+      val s31_sp = Score_df.
+        filter($"CID"==="01" && $"score">40).
+        join(Student_df,Seq("SID"),joinType = "inner").
+        select($"Sname",$"SID")
+
+  //  s31_sp.show()
+
+    // 32  求每门课程的学生人数
+    println("第32题sql解法==============>")
+    val s32_sql = spark.sql(
+      """
+        |select CID,count(distinct SID) as nums
+        |from Score
+        |group by CID
+        |""".stripMargin)
+
+      s32_sql.show()
+
+    println("第32题spark解法==============>")
+    val s32_sp = Score_df.groupBy($"CID").agg(countDistinct($"SID").as("nums"))
+ //   s32_sp.show()
+
+    // 33 成绩不重复，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
+    //  34 成绩有重复的情况下，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
+    // 这两道应该是窗口函数用rank()还是row_number()的区别
+    println("第33题sql解法==============>")
+    val s33_sql = spark.sql(
+      """
+        |with t1 as (select CID from
+        |Course C
+        |where TID =
+        |(select TID from Teacher where Tname="张三")),
+        |t2 as (
+        |select S.CID,S.SID,S.score,
+        |rank() over(partition by S.CID order by S.Score desc) as rank1
+        |from Score S
+        |join t1
+        |on S.CID = t1.CID)
+        |select t2.CID,St.SID,St.Sname,t2.score,t2.rank1
+        |from
+        |t2 join Student St
+        |on St.SID = t2.SID
+        |where t2.rank1 =1
+        |""".stripMargin)
+
+  //    s33_sql.show()
+
+    println("第33题spark解法==============>")
+
+    val s33_sp_t1 = Teacher_df.
+      filter($"Tname"==="张三").
+      select($"TID").
+      join(Course_df,Seq("TID"),joinType = "inner").
+      select($"CID").
+      join(Score_df,Seq("CID"),joinType = "inner").
+      select($"CID",$"SID",$"score")
+
+
+    val rankSpec2 = Window.partitionBy("CID").orderBy(s33_sp_t1("score").desc)
+
+    val s33_sp = s33_sp_t1.
+      withColumn("rank1", rank.over(rankSpec2)).
+      filter($"rank1"===1).
+      join(Student_df,Seq("SID"),joinType = "inner").
+      select($"CID",$"SID",$"Sname",$"score",$"rank1")
+
+  //  s33_sp.show()
+
+    println("第35题sql解法==============>")
+    // 35 查询不同课程成绩相同的学生的学生编号、课程编号、学生成绩
+    val s35_sql = spark.sql(
+      """
+        |select * from
+        |(select SID,CID,score,
+        |count(SID) over(partition by CID,score) as nums
+        |from Score) as t1
+        |where t1.nums > 1
+        |order by t1.CID,t1.SID
+        |""".stripMargin)
+
+      s35_sql.show()
+
+    println("第35题spark解法==============>")
+
+    val rankSpec3 = Window.partitionBy("CID","score")
+    val s35_sp = Score_df.
+        withColumn("nums", count("SID").over(rankSpec3)).
+        filter($"nums" > 1).
+      sort($"CID",$"SID")
+
+    s35_sp.show()
+
+    // 36 查询每门功成绩最好的前两名
+    println("第36题sql解法==============>")
+
+    val s36_sql = spark.sql(
+      """
+        |select * from
+        |(select CID,SID,score,
+        |rank() over(partition by CID order by score) as rank1
+        |from Score)as t1
+        |where t1.rank1 <=2
+        |""".stripMargin)
+
+      s36_sql.show()
+
+    println("第36题spark解法==============>")
+
+    val rankSpec4 = Window.partitionBy("CID").orderBy(Score_df("score").desc)
+    val s36_sp = Score_df.
+      withColumn("rank1", rank.over(rankSpec4)).
+      filter($"rank1" <= 2)
+    s36_sp.show()
+
+    //37 统计每门课程的学生选修人数（超过 5 人的课程才统计）。
+    println("第37题sql解法==============>")
+
+      val s37_sql =  spark.sql(
+        """
+          |select CID,count(distinct SID) as nums
+          |from Score
+          |group by CID
+          |having nums >=5
+          |""".stripMargin)
+
+          s37_sql.show()
+
+    println("第37题spark解法==============>")
+     val s37_sp = Score_df.
+       groupBy($"CID").
+       agg(countDistinct($"SID").as("nums")).
+       filter($"nums">=5)
+
+    s37_sp.show()
+
+    // 38 检索至少选修两门课程的学生学号
+    println("第38题sql解法==============>")
+    val s38_sql = spark.sql(
+      """
+        |select SID,count(distinct CID) as nums
+        |from Score
+        |group by SID
+        |having nums>=2
+        |""".stripMargin)
+
+    s38_sql.show()
+    println("第38题spark解法==============>")
+    val s38_sp = Score_df.
+      groupBy($"SID").
+      agg(countDistinct($"CID").as("nums")).
+      filter($"nums">=2)
+    s38_sp.show()
+
+
+    // 39 查询选修了全部课程的学生信息
+    println("第39题sql解法==============>")
+    val s39_sql = spark.sql(
+      """
+        |select SID,count(distinct CID) as nums
+        |from Score
+        |group by SID
+        |having nums = (select count(distinct CID) from Score)
+        |""".stripMargin)
+
+    s39_sql.show()
+    println("第39题spark解法==============>")
+    // 可以直接对某一列进行聚合，此时相当于.groupby().agg(fun(col))
+    val cid_all = Score_df.agg(countDistinct($"CID")).collect()(0)(0)
+    val s39_sp = Score_df.groupBy($"SID").
+      agg(countDistinct($"CID").as("nums")).filter($"nums" === cid_all)
+    s39_sp.show()
+
+    // 40-45是关于时间处理的
+    // https://www.jianshu.com/p/61ae3e454af2
+    // https://blog.csdn.net/lichangzai/article/details/19406215
+    // https://blog.csdn.net/u013421629/article/details/80450047
+    // 40 查询各学生的年龄，只按年份来算
+    // 41 按照出生日期来算，当前月日 < 出生年月的月日则，年龄减一
+
+    val s40_41_sql = spark.sql(
+      """
+        |select SID,
+        |(2020-year(Sage)) as age1,
+        |TIMESTAMPDIFF(YEAR,Sage,CURDATE()) as age2
+        |from Student
+        |""".stripMargin)
+
+    s40_41_sql.show()
+
+    // 42 查询本周过生日的学生
+    // 43 查询下周过生日的学生
+    // 44 查询本月过生日的学生
+    // 45 查询下月过生日的学生
+
+    val s42_45_sql = spark.sql(
+      """
+        |select * from Student
+        |where
+        |WEEKOFYEAR(Sage)=WEEKOFYEAR(CURDATE())+1
+        |or
+        |WEEKOFYEAR(Sage)=WEEKOFYEAR(CURDATE())+1
+        |or
+        |MONTH(Sage)=MONTH(CURDATE())
+        |or
+        |MONTH(Sage)=MONTH(CURDATE())+1
+        |""".stripMargin)
+
+    s42_45_sql.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -350,7 +589,7 @@ object spark_sql_exercies_21_45 {
         ("05", "07", 29),
 
 
-        ("06", "01", 70),
+        ("06", "01", 65),
         ("06", "02", 69),
         ("06", "03", 70),
         ("06", "04", 55),
