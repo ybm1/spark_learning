@@ -192,12 +192,78 @@ object spark_sql_exercies_21_45 {
       s27_sp.show()
 
      // 28 查询所有学生的课程及分数情况（存在学生没成绩，没选课的情况）
+    println("第28题sql解法==============>")
     val s28_sql = spark.sql(
       """
-        |
-        |
-        |
+        |select St.Sname,St.SID,S.CID,S.score
+        |from Student St
+        |left join Score S
+        |on St.SID = S.SID
         |""".stripMargin)
+
+        s28_sql.show()
+
+    println("第28题spark解法==============>")
+    val s28_sp = Student_df.
+      join(Score_df,Seq("SID"),joinType = "left").
+      select($"Sname",$"SID",$"CID",$"score")
+        s28_sp.show()
+
+    //  29 查询任何一门课程成绩在 70 分以上的姓名、课程名称和分数
+    println("第29题sql解法==============>")
+      val s29_sql = spark.sql(
+        """
+          |select St.Sname,t1.SID,t1.CID,C.Cname,t1.score
+          |from
+          |(select SID,CID,score
+          |from Score
+          |where score >70) as t1
+          |join Student St
+          |on st.SID = t1.SID
+          |join Course C
+          |on C.CID = t1.CID
+          |""".stripMargin)
+
+
+        s29_sql.show()
+    println("第29题spark解法==============>")
+
+    val s29_sp = Score_df.
+      filter($"score">70).
+      join(Student_df,Seq("SID"),joinType = "inner").
+      join(Course_df,Seq("CID"),joinType = "inner").
+      select($"Sname",$"SID",$"CID",$"Cname",$"score")
+
+    s29_sp.show()
+
+    // 30 查询不及格的课程
+    val s30_sql = spark.sql(
+      """
+        |select SID,CID,score
+        |from Score
+        |where score <60
+        |""".stripMargin)
+
+    s30_sql.show()
+
+    val s30_sp = Score_df.filter($"score"<60)
+    s30_sp.show()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
