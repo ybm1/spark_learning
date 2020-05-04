@@ -1,8 +1,8 @@
 package scala.bigdata.spark_sql_exercies
 
 import org.apache.spark.SparkConf
-import org.apache.spark.sql.{DataFrame, SparkSession}
-import org.apache.spark.sql.functions._ // 包含了sql中使用的聚合函数
+import org.apache.spark.sql.functions._
+import org.apache.spark.sql.{DataFrame, SparkSession} // 包含了sql中使用的聚合函数
 object spark_sql_exercies_1_10 {
   def main(args: Array[String]): Unit = {
     val conf = new SparkConf().setAppName("Demo").
@@ -30,28 +30,32 @@ object spark_sql_exercies_1_10 {
     // SQL 做法  关键点是自连接
     println("第1题sql解法==============>")
     val s1_sql = spark.
-      sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2  " +
-        " from Score s1, Score s2,Student st " +
-        "where s1.SID=s2.SID and st.SID = s1.SID " +
-        " and s1.CID='01' and s2.CID='02' " +
-        "and  s1.score>=s2.score")
+      sql(
+        """
+          |select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2
+          |from Score s1, Score s2,Student st
+          |where s1.SID=s2.SID and st.SID = s1.SID
+          |and s1.CID='01' and s2.CID='02'
+          |and s1.score>s2.score
+          |""".stripMargin)
+
     val s1_sql_1 = spark.
-      sql("select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2 " +
-        "from Score s1 join Score s2 on s1.SID=s2.SID " +
-        "join Student st on st.SID=s2.SID " +
-        "where s1.CID='01' and s2.CID='02' " +
-        "and s1.score>=s2.score"
-      )
+      sql(
+        """
+          |select st.Sname,s1.SID,s1.CID,s1.score,s2.CID as CID2,s2.score as score2
+          |from Score s1 join Score s2 on s1.SID=s2.SID
+          |join Student st on st.SID=s2.SID
+          |where s1.CID='01' and s2.CID='02'
+          |and s1.score>s2.score
+          |""".stripMargin)
 
-
-     s1_sql.show()
-     s1_sql_1.show()
-
+    s1_sql.show()
+    s1_sql_1.show()
+    println("第1题spark解法==============>")
     val Score2 = Score_df.
       //注意这里的重命名列的方法
       withColumnRenamed("CID", "CID2").
       withColumnRenamed("score", "score2")
-    println("第1题spark解法==============>")
     val s1_sp = Score_df.
       join(Score2, Seq("SID"), joinType = "inner").
       join(Student_df, Seq("SID"), joinType = "inner").
@@ -59,7 +63,7 @@ object spark_sql_exercies_1_10 {
       filter($"CID" === "01" && $"CID2" === "02").
       filter($"score" > $"score2").
       select("Sname", "SID", "CID", "score", "CID2", "score2")
-      s1_sp.show()
+    s1_sp.show()
 
     println("第1.1题sql解法==============>")
     //  1.1 查询同时存在" 01 "课程和" 02 "课程的情况
@@ -73,7 +77,7 @@ object spark_sql_exercies_1_10 {
         |having nums >= 2
         |order by Sname,SID
         |""".stripMargin)
-     s1_1_sql.show()
+    s1_1_sql.show()
     println("第1.1题spark解法==============>")
     val s1_1_sp = Student_df.
       join(Score_df, Seq("SID"), joinType = "inner").
@@ -81,7 +85,7 @@ object spark_sql_exercies_1_10 {
       groupBy($"Sname", $"SID").agg(countDistinct($"CID").as("nums")).
       filter($"nums" >= 2).
       sort($"Sname", $"SID")
-      s1_1_sp.show()
+    s1_1_sp.show()
 
     println("第2题sql解法==============>")
     // 2.查询平均成绩大于等于 60 分的同学的学生编号和学生姓名和平均成绩
@@ -93,14 +97,14 @@ object spark_sql_exercies_1_10 {
          having avg_score >= 60
          """)
 
-       s2_sql.show()
+    s2_sql.show()
     println("第2题spark解法==============>")
     val s2_sp = Student_df.
       join(Score_df, Seq("SID"), joinType = "inner").
       groupBy($"Sname", $"SID").
       agg(mean($"score").as("avg_score")).
       filter($"avg_score" >= 60)
-      s2_sp.show()
+    s2_sp.show()
 
 
     // 3 查询在 SC 表存在成绩的学生信息
@@ -114,13 +118,13 @@ object spark_sql_exercies_1_10 {
         from Student st join Score sc on st.SID = sc.SID
         group by st.Sname,st.SID
         """)
-     s4_sql.show()
+    s4_sql.show()
     println("第4题spark解法==============>")
     val s4_sp = Student_df.
       join(Score_df, Seq("SID"), joinType = "inner").
       groupBy($"Sname", $"SID").
       agg(count($"CID").as("nums"), sum($"score").as("score_sum"))
-      s4_sp.show()
+    s4_sp.show()
 
     // 4.1 查有成绩的学生信息
     // 没看懂，直接筛选成绩非空的？
@@ -134,7 +138,7 @@ object spark_sql_exercies_1_10 {
         |where Tname like "李%"
         |""".stripMargin)
 
-     s5_sql.show()
+    s5_sql.show()
     println("第5题spark解法==============>")
     val s5_sp = Teacher_df.
       filter($"Tname" like "李%").
@@ -191,7 +195,7 @@ object spark_sql_exercies_1_10 {
 
 
     // 8 查询至少有一门课与学号为" 01 "的同学所学相同的同学的信息
-   // 注册一个求两个数组交集的udf spark sql中有自带的array_intersect也可以使用
+    // 注册一个求两个数组交集的udf spark sql中有自带的array_intersect也可以使用
     spark.udf.register("two_cols_intersect", (a: Seq[String], b: Seq[String]) => a.intersect(b))
     spark.udf.register("arr_len", (a: Seq[String]) => a.toArray.length)
     println("第8题sql解法==============>")
@@ -217,18 +221,18 @@ object spark_sql_exercies_1_10 {
         |where nums >=1 and SID != "01"
         |order by SID
         |""".stripMargin)
-      s8_sql.show()
+    s8_sql.show()
 
-       val t1_c1 = Score_df.
+    println("第8题spark解法==============>")
+    val t1_c1 = Score_df.
       filter($"SID" === "01").
       groupBy($"SID").
       agg(collect_set($"CID").as("c1")).
-      //select($"c1").
-      map(a=> a.getAs[Seq[String]]("c1").toArray).
+      map(a => a.getAs[Seq[String]]("c1").toArray).
       collectAsList(). // 这个以及下面的get方法非常重要，可以获得一个具体的东西
       get(0)
-   // println(t1_c1.mkString(","))
-    println("第8题spark解法==============>")
+    // println(t1_c1.mkString(","))
+
     val s8_sp = Score_df.
       groupBy($"SID").
       agg(collect_set($"CID").as("c_all")).
@@ -278,7 +282,7 @@ object spark_sql_exercies_1_10 {
       groupBy($"SID").
       agg(collect_set($"CID").as("c1")).
       //select($"c1").
-      map(a=> a.getAs[Seq[String]]("c1").toArray).
+      map(a => a.getAs[Seq[String]]("c1").toArray).
       collectAsList(). // 这个以及下面的get方法非常重要，可以获得一个具体的东西
       get(0)
     val c1_l = t1_c1_s.length
@@ -299,7 +303,7 @@ object spark_sql_exercies_1_10 {
 
     s9_sp.show()
 
-// 10 查询没学过"张三"老师讲授的任一门课程的学生姓名
+    // 10 查询没学过"张三"老师讲授的任一门课程的学生姓名
     println("第10题sql解法==============>")
     val s10_sql = spark.sql(
       """
@@ -329,11 +333,11 @@ object spark_sql_exercies_1_10 {
     s10_sql.show()
     println("第10题spark解法==============>")
     val t1_c1_t = Course_df.
-      join(Teacher_df,Seq("TID")).
+      join(Teacher_df, Seq("TID")).
       filter($"Tname" === "张三").
       groupBy($"TID").
       agg(collect_set($"CID").as("c1")).
-      map(a=> a.getAs[Seq[String]]("c1").toArray).
+      map(a => a.getAs[Seq[String]]("c1").toArray).
       collect()(0)
     // collectAsList().
     // get(0)
@@ -352,13 +356,11 @@ object spark_sql_exercies_1_10 {
         (sid, c_all)
       }).
       toDF("SID", "nums").
-      join(Student_df,Seq("SID")).
-      select($"Sname",$"nums").
+      join(Student_df, Seq("SID")).
+      select($"Sname", $"nums").
       sort($"Sname")
 
- s10_sp.show()
-
-
+    s10_sp.show()
 
 
     println("Run Successfully!")

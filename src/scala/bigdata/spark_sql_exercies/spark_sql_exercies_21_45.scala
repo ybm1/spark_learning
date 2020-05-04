@@ -118,7 +118,7 @@ object spark_sql_exercies_21_45 {
         |order by t1.score_avg desc,CID
         |""".stripMargin)
 
-      s25_sql.show()
+      s25_sql.show(5)
     println("第25题spark解法==============>")
     val Score_df_tmp = Score_df.
       groupBy($"CID").
@@ -128,7 +128,7 @@ object spark_sql_exercies_21_45 {
     val s25_sp = Score_df_tmp.
       withColumn("rank1", row_number.over(rankSpec1)).
       sort(desc("score_avg"),$"CID")
-    s25_sp.show()
+    s25_sp.show(5)
 
 
 
@@ -225,7 +225,7 @@ object spark_sql_exercies_21_45 {
           |""".stripMargin)
 
 
- //       s29_sql.show()
+       s29_sql.show()
     println("第29题spark解法==============>")
 
     val s29_sp = Score_df.
@@ -234,7 +234,7 @@ object spark_sql_exercies_21_45 {
       join(Course_df,Seq("CID"),joinType = "inner").
       select($"Sname",$"SID",$"CID",$"Cname",$"score")
 
-   // s29_sp.show()
+    s29_sp.show()
 
     // 30 查询不及格的课程
     println("第30题sql解法==============>")
@@ -245,10 +245,10 @@ object spark_sql_exercies_21_45 {
         |where score <60
         |""".stripMargin)
 
- //   s30_sql.show()
+   s30_sql.show()
     println("第30题spark解法==============>")
     val s30_sp = Score_df.filter($"score"<60)
- //   s30_sp.show()
+   s30_sp.show()
 
   // 31 查询课程编号为 01 且课程成绩在 40 分以上的学生的学号和姓名
     println("第31题sql解法==============>")
@@ -271,7 +271,7 @@ object spark_sql_exercies_21_45 {
         join(Student_df,Seq("SID"),joinType = "inner").
         select($"Sname",$"SID")
 
-  //  s31_sp.show()
+    s31_sp.show()
 
     // 32  求每门课程的学生人数
     println("第32题sql解法==============>")
@@ -286,7 +286,7 @@ object spark_sql_exercies_21_45 {
 
     println("第32题spark解法==============>")
     val s32_sp = Score_df.groupBy($"CID").agg(countDistinct($"SID").as("nums"))
- //   s32_sp.show()
+    s32_sp.show()
 
     // 33 成绩不重复，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
     //  34 成绩有重复的情况下，查询选修「张三」老师所授课程的学生中，成绩最高的学生信息及其成绩
@@ -311,7 +311,7 @@ object spark_sql_exercies_21_45 {
         |where t2.rank1 =1
         |""".stripMargin)
 
-  //    s33_sql.show()
+     s33_sql.show(5)
 
     println("第33题spark解法==============>")
 
@@ -332,10 +332,9 @@ object spark_sql_exercies_21_45 {
       join(Student_df,Seq("SID"),joinType = "inner").
       select($"CID",$"SID",$"Sname",$"score",$"rank1")
 
-  //  s33_sp.show()
-
+   s33_sp.show(5)
+    // 35 查询课程成绩相同的不同学生的学生编号、课程编号、学生成绩
     println("第35题sql解法==============>")
-    // 35 查询不同课程成绩相同的学生的学生编号、课程编号、学生成绩
     val s35_sql = spark.sql(
       """
         |select * from
@@ -346,7 +345,7 @@ object spark_sql_exercies_21_45 {
         |order by t1.CID,t1.SID
         |""".stripMargin)
 
-      s35_sql.show()
+      s35_sql.show(5)
 
     println("第35题spark解法==============>")
 
@@ -356,7 +355,7 @@ object spark_sql_exercies_21_45 {
         filter($"nums" > 1).
       sort($"CID",$"SID")
 
-    s35_sp.show()
+    s35_sp.show(5)
 
     // 36 查询每门功成绩最好的前两名
     println("第36题sql解法==============>")

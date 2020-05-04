@@ -80,7 +80,7 @@ object spark_sql_exercies_11_20 {
         |order by SID,score desc
         |""".stripMargin)
 
-      s12_sql_1.show()
+      s12_sql_1.show(5)
 
     val s12_sql_2 = spark.sql(
       """
@@ -95,7 +95,7 @@ object spark_sql_exercies_11_20 {
         |""".stripMargin)
 // 注意这里用join来代替了in，因为in往往会使执行速度变慢，把临时表作为右连接的右表(或者左连接的左表)即可
 
-   s12_sql_2.show()
+   s12_sql_2.show(5)
 
 
     println("第12题spark解法==============>")
@@ -105,7 +105,7 @@ object spark_sql_exercies_11_20 {
       join(Score_df,Seq("SID"),joinType = "left").
       sort(asc("SID"),desc("score"))
 
-    s12_sp.show()
+    s12_sp.show(5)
 
 // 13 按平均成绩从高到低显示所有学生的所有课程的成绩以及平均成绩
     println("第13题sql解法==============>")
@@ -179,7 +179,7 @@ object spark_sql_exercies_11_20 {
           |from Score
           |""".stripMargin)
 
-     s15_sql.show()
+     s15_sql.show(5)
 
     println("第15题spark解法==============>")
 // spark 窗口函数 https://blog.csdn.net/fox64194167/article/details/80790754
@@ -189,7 +189,7 @@ object spark_sql_exercies_11_20 {
       withColumn("rank1", rank.over(rankSpec1)).
       withColumn("rank2", dense_rank.over(rankSpec1)).
       withColumn("rank3", row_number.over(rankSpec1))
-    s15_sp.show()
+    s15_sp.show(5)
 
     //16 查询学生的总成绩，并进行排名，总分重复时保留名次空缺
     //16.1 查询学生的总成绩，并进行排名，总分重复时不保留名次空缺
@@ -237,7 +237,7 @@ object spark_sql_exercies_11_20 {
       |order by t1.CID
       |""".stripMargin)
 
-    s18_sql.show()
+    s18_sql.show(5)
 
 
     println("第18题spark解法==============>")
@@ -247,7 +247,7 @@ object spark_sql_exercies_11_20 {
       filter($"rank1"<=3).
       sort("CID")
 
-      s18_sp.show()
+      s18_sp.show(5)
 
     //19 查询每门课程被选修的学生数
     println("第19题sql解法==============>")
