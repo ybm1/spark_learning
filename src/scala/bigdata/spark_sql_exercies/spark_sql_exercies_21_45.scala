@@ -452,7 +452,9 @@ object spark_sql_exercies_21_45 {
         |from Student
         |""".stripMargin)
 
-   // |TIMESTAMPDIFF(YEAR,Sage,current_date()) as age2
+    // 41题在mysql中可以用下面这个TIMESTAMPDIFF来计算两个日期之间的差距，并且可以换算成以年为单位
+    // 不过Hive和spark sql不支持
+   // TIMESTAMPDIFF(YEAR,Sage,current_date()) as age2
 
     s40_41_sql.show()
 
@@ -516,9 +518,9 @@ object spark_sql_exercies_21_45 {
   // 分别创建 学生表Student;科目表Course;教师表Teachers;成绩表Score;
   def get_Student_table(spark: SparkSession): DataFrame = {
     val Student_arr: Array[(String, String, String, String)] =
-      Array(("01", "赵雷", "1990-01-01", "男"),
-        ("02", "赵雷", "1990-12-21", "男"),
-        ("03", "孙小风", "1990-12-20", "男"),
+      Array(("01", "赵雷", "1990-05-01", "男"),
+        ("02", "赵雷", "1990-08-21", "男"),
+        ("03", "孙小风", "1990-06-20", "男"),
         ("04", "李云", "1990-12-06", "女"),
         ("05", "周大风", "1991-12-01", "女"),
         ("06", "吴兰", "1992-01-01", "女"),

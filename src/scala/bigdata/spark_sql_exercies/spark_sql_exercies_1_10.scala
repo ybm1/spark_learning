@@ -191,6 +191,7 @@ object spark_sql_exercies_1_10 {
 
 
     // 8 查询至少有一门课与学号为" 01 "的同学所学相同的同学的信息
+   // 注册一个求两个数组交集的udf spark sql中有自带的array_intersect也可以使用
     spark.udf.register("two_cols_intersect", (a: Seq[String], b: Seq[String]) => a.intersect(b))
     spark.udf.register("arr_len", (a: Seq[String]) => a.toArray.length)
     println("第8题sql解法==============>")
@@ -211,7 +212,7 @@ object spark_sql_exercies_1_10 {
         |select t3.SID as SID,t3.nums as nums
         |from
         |(select t2.SID as SID,
-        |arr_len(two_cols_intersect(t2.c_all,(select t1.c_1 from t1))) as nums
+        |arr_len(array_intersect(t2.c_all,(select t1.c_1 from t1))) as nums
         |from t2) as t3
         |where nums >=1 and SID != "01"
         |order by SID
@@ -368,12 +369,13 @@ object spark_sql_exercies_1_10 {
   // 分别创建 学生表Student;科目表Course;教师表Teachers;成绩表Score;
   def get_Student_table(spark: SparkSession): DataFrame = {
     val Student_arr: Array[(String, String, String, String)] =
-      Array(("01", "赵雷", "1990-01-01", "男"),
-        ("02", "钱电", "1990-12-21", "男"),
-        ("03", "孙小风", "1990-12-20", "男"),
+      Array(("01", "赵雷", "1990-05-01", "男"),
+        ("02", "赵雷", "1990-08-21", "男"),
+        ("03", "孙小风", "1990-06-20", "男"),
         ("04", "李云", "1990-12-06", "女"),
         ("05", "周大风", "1991-12-01", "女"),
-        ("06", "吴兰", "1992-01-01", "女"))
+        ("06", "吴兰", "1992-01-01", "女"),
+        ("07", "吴兰", "1992-01-01", "女"))
 
     val Student = spark.createDataFrame(Student_arr).
       toDF("SID", "Sname", "Sage", "Ssex")
@@ -441,7 +443,7 @@ object spark_sql_exercies_1_10 {
         ("05", "07", 29),
 
 
-        ("06", "01", 70),
+        ("06", "01", 65),
         ("06", "02", 69),
         ("06", "03", 70),
         ("06", "04", 55),
@@ -460,7 +462,6 @@ object spark_sql_exercies_1_10 {
       toDF("SID", "CID", "score")
     Score
   }
-
 
 
 }
